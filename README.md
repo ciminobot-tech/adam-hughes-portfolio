@@ -1,4 +1,4 @@
-# Adam Hughes portfolio — v1
+# Adam Hughes portfolio v1
 
 This is a dependency-free static portfolio site: `index.html` + `styles.css`.
 
