@@ -55,7 +55,7 @@ body { margin:0; background:var(--paper); color:var(--ink); font-family:Manrope,
 /* The lead automotive take uses a separately rendered vehicle, so it reads as an object sitting on the deck rather than another image panel. */
 .hero-volume[data-volume="0"] .stage-subject{width:min(50vw,720px);height:min(33vw,470px);bottom:14%;filter:drop-shadow(0 24px 8px rgba(0,0,0,.9))}
 .hero-volume[data-volume="0"] .stage-subject:after{display:none}
-.hero-volume[data-volume="0"] .subject-image.scene-0{clip-path:none;background-image:url('assets/Automotive/porsche-stage.png');background-size:contain;background-repeat:no-repeat;background-position:center bottom;mix-blend-mode:screen;filter:contrast(1.08) saturate(.96);border:0;transform:translateY(38px) scale(.88)}
+.hero-volume[data-volume="0"] .subject-image.scene-0{clip-path:none;background-image:url('assets/Automotive/porsche-cgi-stage.png');background-size:contain;background-repeat:no-repeat;background-position:center bottom;mix-blend-mode:screen;filter:contrast(1.1) saturate(.98);border:0;transform:translateY(38px) scale(.88)}
 .hero-volume[data-volume="0"] .stage-subject:before{content:"";position:absolute;z-index:-1;left:16%;right:13%;bottom:3%;height:13%;border-radius:50%;background:rgba(0,0,0,.75);filter:blur(15px);transform:scaleX(1.08)}
 .hero-volume[data-volume="0"] .stage-subject span{left:29%;bottom:8%}
 .hero-volume[data-volume="0"] .subject-image.scene-0{transform:translateY(0) scale(1)}
