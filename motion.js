@@ -15,12 +15,12 @@ if (!reduceMotion.matches && 'IntersectionObserver' in window) {
   const orb = document.querySelector('.hero-orb');
   const supportsScrollTimeline = CSS.supports('animation-timeline: view()');
 
-  projects.forEach((project) => project.classList.add('project-motion'));
+  projects.forEach((project) => project.querySelector('.project-image')?.classList.add('project-motion'));
 
   if (supportsScrollTimeline) {
     document.documentElement.classList.add('native-scroll-motion');
   } else {
-    const state = projects.map((project) => ({ project, y: 0, scale: 1, opacity: 1, targetY: 0, targetScale: 1, targetOpacity: 1 }));
+    const state = projects.map((project) => ({ project, image: project.querySelector('.project-image'), y: 0, scale: 1, opacity: 1, blur: 0, targetY: 0, targetScale: 1, targetOpacity: 1, targetBlur: 0 }));
     const orbState = { y: 0, targetY: 0 };
     let running = false;
 
@@ -31,15 +31,20 @@ if (!reduceMotion.matches && 'IntersectionObserver' in window) {
       state.forEach((item) => {
         const rect = item.project.getBoundingClientRect();
         const distance = Math.max(-1, Math.min(1, (rect.top + rect.height * 0.5 - item.y - viewportCenter) / window.innerHeight));
-        item.targetY = distance * -96;
-        item.targetScale = 1 - Math.abs(distance) * 0.14;
-        item.targetOpacity = 1 - Math.abs(distance) * 0.42;
+        item.targetY = distance * -126;
+        item.targetScale = 1.04 + Math.abs(distance) * 0.16;
+        item.targetOpacity = 1 - Math.abs(distance) * 0.3;
+        item.targetBlur = Math.abs(distance) * 5;
         item.y += (item.targetY - item.y) * 0.11;
         item.scale += (item.targetScale - item.scale) * 0.11;
         item.opacity += (item.targetOpacity - item.opacity) * 0.11;
-        item.project.style.transform = `translate3d(0, ${item.y.toFixed(2)}px, 0) scale(${item.scale.toFixed(4)})`;
-        item.project.style.opacity = item.opacity.toFixed(3);
-        settling ||= Math.abs(item.targetY - item.y) > 0.08 || Math.abs(item.targetScale - item.scale) > 0.0002 || Math.abs(item.targetOpacity - item.opacity) > 0.002;
+        item.blur += (item.targetBlur - item.blur) * 0.11;
+        if (item.image) {
+          item.image.style.transform = `translate3d(0, ${item.y.toFixed(2)}px, 0) scale(${item.scale.toFixed(4)})`;
+          item.image.style.opacity = item.opacity.toFixed(3);
+          item.image.style.filter = `blur(${item.blur.toFixed(2)}px)`;
+        }
+        settling ||= Math.abs(item.targetY - item.y) > 0.08 || Math.abs(item.targetScale - item.scale) > 0.0002 || Math.abs(item.targetOpacity - item.opacity) > 0.002 || Math.abs(item.targetBlur - item.blur) > 0.04;
       });
 
       if (orb) {
