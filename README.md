@@ -11,4 +11,8 @@ This is a dependency-free static portfolio site: `index.html` + `styles.css`.
 
 Before publishing, replace `hello@example.com` in `index.html`, and then replace the four temporary Unsplash project images with Adam's cleared work imagery.
 
+## Image labels
+
+Keep supplied work organised under the exact labels Adam provides: `Fashion`, `Automotive`, `Commercial`, `Branding`, and `Auto motive`. Do not rename these categories.
+
 Design reference: large image-led, minimal-copy creative portfolios (not a copied template). It borrows the editorial restraint common in Canva's director/creative portfolio templates while remaining fully custom and portable.
