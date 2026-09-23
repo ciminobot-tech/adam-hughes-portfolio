@@ -60,3 +60,11 @@ body { margin:0; background:var(--paper); color:var(--ink); font-family:Manrope,
 .hero-volume[data-volume="0"] .stage-subject span{left:29%;bottom:8%}
 .hero-volume[data-volume="0"] .subject-image.scene-0{transform:translateY(0) scale(1)}
 @media(max-width:650px){.hero-volume[data-volume="0"] .stage-subject{width:112vw;height:72vw;bottom:23%}.hero-volume[data-volume="0"] .stage-subject span{left:24%;bottom:10%}}
+
+/* Automotive is a single physical virtual-production render, so the car, floor, wall and light all belong to one coherent space. */
+.hero-volume[data-volume="0"] .volume-stage{background:#111 url('assets/Automotive/automotive-volume-stage.png') center center / cover no-repeat}
+.hero-volume[data-volume="0"] .volume-rig,.hero-volume[data-volume="0"] .volume-wall,.hero-volume[data-volume="0"] .volume-floor,.hero-volume[data-volume="0"] .stage-subject,.hero-volume[data-volume="0"] .volume-status{opacity:0;visibility:hidden}
+.hero-volume[data-volume="0"] .hero-copy h1{color:#151515;text-shadow:0 1px 16px rgba(255,255,255,.42)}
+.hero-volume[data-volume="0"] .hero-copy .eyebrow,.hero-volume[data-volume="0"] .hero-copy .hero-bottom{color:#181818;text-shadow:0 1px 14px rgba(255,255,255,.58)}
+.hero-volume[data-volume="0"] .hero-copy .circle-link{border-color:#171717;color:#171717}
+@media(max-width:650px){.hero-volume[data-volume="0"] .volume-stage{background-position:57% center}.hero-volume[data-volume="0"] .hero-copy h1{color:#111;text-shadow:0 1px 12px rgba(255,255,255,.65)}}
