@@ -9,6 +9,30 @@ const motionGroups = [
 
 const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 const orb = document.querySelector('.hero-orb');
+const volume = document.querySelector('.hero-volume');
+
+if (volume && !reduceMotion.matches) {
+  const titles = ['Automotive', 'Fashion', 'Commercial', 'Branding'];
+  const title = volume.querySelector('[data-volume-title]');
+  const count = volume.querySelector('[data-volume-count]');
+  let active = -1;
+  const renderVolume = () => {
+    const rect = volume.getBoundingClientRect();
+    const travel = Math.max(1, rect.height - window.innerHeight);
+    const progress = Math.max(0, Math.min(0.999, -rect.top / travel));
+    const scene = Math.min(3, Math.floor(progress * 4));
+    volume.style.setProperty('--volume-progress', progress.toFixed(3));
+    if (scene !== active) {
+      active = scene;
+      volume.dataset.volume = String(scene);
+      if (title) title.textContent = titles[scene];
+      if (count) count.textContent = `0${scene + 1} / 04`;
+    }
+  };
+  window.addEventListener('scroll', renderVolume, { passive: true });
+  window.addEventListener('resize', renderVolume);
+  renderVolume();
+}
 
 if (orb && !reduceMotion.matches) {
   const nodes = [...orb.querySelectorAll('[data-orb-node]')];
