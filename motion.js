@@ -13,6 +13,7 @@ const volume = document.querySelector('.hero-volume');
 
 if (volume && !reduceMotion.matches) {
   const titles = ['Automotive', 'Fashion', 'Commercial', 'Branding'];
+  const cameraStops = [-20, -48, -5, -42];
   const title = volume.querySelector('[data-volume-title]');
   const count = volume.querySelector('[data-volume-count]');
   const ledTitle = volume.querySelector('[data-led-title]');
@@ -24,7 +25,10 @@ if (volume && !reduceMotion.matches) {
     const progress = Math.max(0, Math.min(0.999, -rect.top / travel));
     const scene = Math.min(3, Math.floor(progress * 4));
     volume.style.setProperty('--volume-progress', progress.toFixed(3));
-    volume.style.setProperty('--camera-pan', `${(Math.sin(progress * Math.PI * 3) * 7).toFixed(2)}vw`);
+    const cameraIndex = Math.min(2, Math.floor(progress * 3));
+    const cameraMix = (progress * 3) - cameraIndex;
+    const cameraPosition = cameraStops[cameraIndex] + (cameraStops[cameraIndex + 1] - cameraStops[cameraIndex]) * cameraMix;
+    volume.style.setProperty('--camera-pan', `${cameraPosition.toFixed(2)}vw`);
     if (scene !== active) {
       active = scene;
       volume.dataset.volume = String(scene);

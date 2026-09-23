@@ -70,7 +70,7 @@ body { margin:0; background:var(--paper); color:var(--ink); font-family:Manrope,
 .hero-volume[data-volume="0"] .hero-copy .circle-link{border-color:#171717;color:#171717}
 @media(max-width:650px){.hero-volume[data-volume="0"] .volume-stage{background-image:url('assets/Automotive/automotive-volume-stage-mobile-v2.png');background-position:center center}.hero-volume[data-volume="0"] .hero-copy h1{color:#111;text-shadow:0 1px 12px rgba(255,255,255,.65)}}
 
-/* The camera sweeps across the LED wall between poster chapters. */
-.hero-volume:not([data-volume="0"]) .volume-stage{transform:translate3d(var(--camera-pan,0),0,0);transition:transform 120ms linear}
+/* One oversized volume is viewed through a moving camera. The view travels left, then back right, across the same stage. */
+.hero-volume:not([data-volume="0"]) .volume-stage{width:150vw;transform:translate3d(var(--camera-pan,-20vw),0,0);transition:none}
 .hero-volume[data-volume="3"] .subject-image.scene-3{background-image:url('assets/Branding/racing-driver-full-body-3d.png');background-size:contain;background-repeat:no-repeat;background-position:center bottom;clip-path:none;mix-blend-mode:screen;border:0}
-@media(max-width:650px){.led-poster-title{left:9%;bottom:10%}.led-poster-title strong{font-size:34px}.hero-volume:not([data-volume="0"]) .volume-stage{transform:translate3d(var(--camera-pan,0),0,0) scale(1.03)}}
+@media(max-width:650px){.led-poster-title{left:9%;bottom:10%}.led-poster-title strong{font-size:34px}.hero-volume:not([data-volume="0"]) .volume-stage{width:180vw;transform:translate3d(var(--camera-pan,-20vw),0,0) scale(1.03)}}
