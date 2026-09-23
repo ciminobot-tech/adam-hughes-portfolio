@@ -8,11 +8,52 @@ const motionGroups = [
 ];
 
 const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+const orb = document.querySelector('.hero-orb');
+
+if (orb && !reduceMotion.matches) {
+  const nodes = [...orb.querySelectorAll('[data-orb-node]')];
+  let orbFrame = false;
+
+  const renderOrb = () => {
+    const rotation = Math.min(window.scrollY, window.innerHeight * 1.25) * 0.42;
+    let activeNode = nodes[0];
+    let activeDepth = -1;
+
+    nodes.forEach((node) => {
+      const angle = (Number(node.dataset.angle) + rotation) * (Math.PI / 180);
+      const depth = (Math.cos(angle) + 1) / 2;
+      const x = Math.sin(angle) * 145;
+      const y = Math.sin(angle * 2) * 10;
+      const scale = 0.68 + depth * 0.42;
+      node.style.transform = `translate3d(${x.toFixed(1)}px, ${y.toFixed(1)}px, 0) scale(${scale.toFixed(3)})`;
+      node.style.opacity = (0.26 + depth * 0.74).toFixed(3);
+      node.style.zIndex = String(Math.round(depth * 100));
+      node.classList.toggle('is-orb-active', depth > 0.92);
+      if (depth > activeDepth) {
+        activeDepth = depth;
+        activeNode = node;
+      }
+    });
+
+    orb.dataset.active = activeNode.textContent.trim();
+    orbFrame = false;
+  };
+
+  const requestOrbFrame = () => {
+    if (!orbFrame) {
+      orbFrame = true;
+      window.requestAnimationFrame(renderOrb);
+    }
+  };
+
+  window.addEventListener('scroll', requestOrbFrame, { passive: true });
+  window.addEventListener('resize', requestOrbFrame);
+  requestOrbFrame();
+}
 
 if (!reduceMotion.matches && 'IntersectionObserver' in window) {
   document.documentElement.classList.add('motion-ready');
   const projects = [...document.querySelectorAll('.project')];
-  const orb = document.querySelector('.hero-orb');
   const supportsScrollTimeline = CSS.supports('animation-timeline: view()');
 
   projects.forEach((project) => project.querySelector('.project-image')?.classList.add('project-motion'));
@@ -21,7 +62,6 @@ if (!reduceMotion.matches && 'IntersectionObserver' in window) {
     document.documentElement.classList.add('native-scroll-motion');
   } else {
     const state = projects.map((project) => ({ project, image: project.querySelector('.project-image'), y: 0, scale: 1, opacity: 1, blur: 0, targetY: 0, targetScale: 1, targetOpacity: 1, targetBlur: 0 }));
-    const orbState = { y: 0, targetY: 0 };
     let running = false;
 
     const render = () => {
@@ -46,13 +86,6 @@ if (!reduceMotion.matches && 'IntersectionObserver' in window) {
         }
         settling ||= Math.abs(item.targetY - item.y) > 0.08 || Math.abs(item.targetScale - item.scale) > 0.0002 || Math.abs(item.targetOpacity - item.opacity) > 0.002 || Math.abs(item.targetBlur - item.blur) > 0.04;
       });
-
-      if (orb) {
-        orbState.targetY = Math.min(window.scrollY * 0.16, 150);
-        orbState.y += (orbState.targetY - orbState.y) * 0.09;
-        orb.style.transform = `translate3d(0, ${orbState.y.toFixed(2)}px, 0)`;
-        settling ||= Math.abs(orbState.targetY - orbState.y) > 0.08;
-      }
 
       if (settling) {
         window.requestAnimationFrame(render);
