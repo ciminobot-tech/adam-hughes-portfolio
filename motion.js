@@ -12,43 +12,95 @@ const orb = document.querySelector('.hero-orb');
 
 if (orb && !reduceMotion.matches) {
   const nodes = [...orb.querySelectorAll('[data-orb-node]')];
-  let orbFrame = false;
+  const currentLabel = orb.querySelector('[data-orb-current]');
+  const toRadians = (degrees) => degrees * Math.PI / 180;
+  const points = nodes.map((node) => {
+    const longitude = toRadians(Number(node.dataset.longitude));
+    const latitude = toRadians(Number(node.dataset.latitude));
+    return { node, x: Math.cos(latitude) * Math.sin(longitude), y: Math.sin(latitude), z: Math.cos(latitude) * Math.cos(longitude) };
+  });
+  let rotation = { x: -8, y: 0 };
+  let velocity = { x: 0, y: 0 };
+  let target = null;
+  let dragging = false;
+  let last = null;
+  let frame = null;
+  let lastScroll = window.scrollY;
+
+  const rotatePoint = (point) => {
+    const yRad = toRadians(rotation.y);
+    const xRad = toRadians(rotation.x);
+    const x1 = point.x * Math.cos(yRad) + point.z * Math.sin(yRad);
+    const z1 = -point.x * Math.sin(yRad) + point.z * Math.cos(yRad);
+    return { x: x1, y: point.y * Math.cos(xRad) - z1 * Math.sin(xRad), z: point.y * Math.sin(xRad) + z1 * Math.cos(xRad) };
+  };
 
   const renderOrb = () => {
-    const rotation = Math.min(window.scrollY, window.innerHeight * 1.25) * 0.42;
-    let activeNode = nodes[0];
-    let activeDepth = -1;
-
-    nodes.forEach((node) => {
-      const angle = (Number(node.dataset.angle) + rotation) * (Math.PI / 180);
-      const depth = (Math.cos(angle) + 1) / 2;
-      const x = Math.sin(angle) * 145;
-      const y = Math.sin(angle * 2) * 10;
-      const scale = 0.68 + depth * 0.42;
-      node.style.transform = `translate3d(${x.toFixed(1)}px, ${y.toFixed(1)}px, 0) scale(${scale.toFixed(3)})`;
-      node.style.opacity = (0.26 + depth * 0.74).toFixed(3);
-      node.style.zIndex = String(Math.round(depth * 100));
-      node.classList.toggle('is-orb-active', depth > 0.92);
-      if (depth > activeDepth) {
-        activeDepth = depth;
-        activeNode = node;
-      }
+    const radius = orb.clientWidth * 0.37;
+    let foremost = points[0];
+    let greatestDepth = -Infinity;
+    points.forEach((point) => {
+      const position = rotatePoint(point);
+      const depth = (position.z + 1) / 2;
+      const scale = 0.58 + depth * 0.56;
+      point.node.style.transform = `translate3d(${(position.x * radius).toFixed(1)}px, ${(position.y * radius).toFixed(1)}px, 0) scale(${scale.toFixed(3)})`;
+      point.node.style.opacity = (0.18 + depth * 0.82).toFixed(3);
+      point.node.style.zIndex = String(Math.round(depth * 100));
+      point.node.classList.toggle('is-orb-active', depth > 0.955);
+      point.node.style.pointerEvents = depth > 0.36 ? 'auto' : 'none';
+      if (position.z > greatestDepth) { greatestDepth = position.z; foremost = point; }
     });
-
-    orb.dataset.active = activeNode.textContent.trim();
-    orbFrame = false;
+    if (currentLabel) currentLabel.textContent = foremost.node.textContent.replace(/^\s*\d+\s*/, '').trim();
   };
 
-  const requestOrbFrame = () => {
-    if (!orbFrame) {
-      orbFrame = true;
-      window.requestAnimationFrame(renderOrb);
+  const animate = () => {
+    if (target) {
+      rotation.x += (target.x - rotation.x) * 0.12;
+      rotation.y += (target.y - rotation.y) * 0.12;
+      if (Math.abs(target.x - rotation.x) < 0.08 && Math.abs(target.y - rotation.y) < 0.08) target = null;
+    } else if (!dragging) {
+      rotation.x += velocity.x;
+      rotation.y += velocity.y;
+      velocity.x *= 0.91;
+      velocity.y *= 0.91;
+      if (Math.abs(velocity.x) < 0.005) velocity.x = 0;
+      if (Math.abs(velocity.y) < 0.005) velocity.y = 0;
     }
+    renderOrb();
+    if (dragging || target || velocity.x || velocity.y) frame = requestAnimationFrame(animate);
+    else frame = null;
+  };
+  const requestFrame = () => { if (!frame) frame = requestAnimationFrame(animate); };
+  const centreNode = (point) => {
+    target = {
+      y: rotation.y - Math.atan2(point.x, point.z) * 180 / Math.PI,
+      x: rotation.x + Math.atan2(point.y, Math.hypot(point.x, point.z)) * 180 / Math.PI,
+    };
+    velocity = { x: 0, y: 0 };
+    requestFrame();
   };
 
-  window.addEventListener('scroll', requestOrbFrame, { passive: true });
-  window.addEventListener('resize', requestOrbFrame);
-  requestOrbFrame();
+  orb.addEventListener('pointerdown', (event) => {
+    if (event.target.closest('a')) return;
+    dragging = true; target = null; velocity = { x: 0, y: 0 }; last = { x: event.clientX, y: event.clientY };
+    orb.setPointerCapture(event.pointerId); orb.classList.add('is-dragging'); requestFrame();
+  });
+  orb.addEventListener('pointermove', (event) => {
+    if (!dragging || !last) return;
+    const dx = event.clientX - last.x; const dy = event.clientY - last.y;
+    rotation.y += dx * 0.48; rotation.x -= dy * 0.48;
+    velocity = { x: -dy * 0.075, y: dx * 0.075 }; last = { x: event.clientX, y: event.clientY };
+  });
+  const stopDrag = () => { if (!dragging) return; dragging = false; last = null; orb.classList.remove('is-dragging'); requestFrame(); };
+  orb.addEventListener('pointerup', stopDrag); orb.addEventListener('pointercancel', stopDrag);
+  nodes.forEach((node, index) => node.addEventListener('click', () => centreNode(points[index])));
+  window.addEventListener('scroll', () => {
+    const delta = window.scrollY - lastScroll; lastScroll = window.scrollY;
+    if (Math.abs(delta) < 1) return;
+    rotation.x -= delta * 0.07; velocity.x = -delta * 0.018; requestFrame();
+  }, { passive: true });
+  window.addEventListener('resize', renderOrb);
+  renderOrb();
 }
 
 if (!reduceMotion.matches && 'IntersectionObserver' in window) {
