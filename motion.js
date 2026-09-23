@@ -20,7 +20,7 @@ if (!reduceMotion.matches && 'IntersectionObserver' in window) {
   if (supportsScrollTimeline) {
     document.documentElement.classList.add('native-scroll-motion');
   } else {
-    const state = projects.map((project) => ({ project, y: 0, scale: 1, targetY: 0, targetScale: 1 }));
+    const state = projects.map((project) => ({ project, y: 0, scale: 1, opacity: 1, targetY: 0, targetScale: 1, targetOpacity: 1 }));
     const orbState = { y: 0, targetY: 0 };
     let running = false;
 
@@ -31,16 +31,19 @@ if (!reduceMotion.matches && 'IntersectionObserver' in window) {
       state.forEach((item) => {
         const rect = item.project.getBoundingClientRect();
         const distance = Math.max(-1, Math.min(1, (rect.top + rect.height * 0.5 - item.y - viewportCenter) / window.innerHeight));
-        item.targetY = distance * -34;
-        item.targetScale = 1 - Math.abs(distance) * 0.018;
+        item.targetY = distance * -96;
+        item.targetScale = 1 - Math.abs(distance) * 0.14;
+        item.targetOpacity = 1 - Math.abs(distance) * 0.42;
         item.y += (item.targetY - item.y) * 0.11;
         item.scale += (item.targetScale - item.scale) * 0.11;
+        item.opacity += (item.targetOpacity - item.opacity) * 0.11;
         item.project.style.transform = `translate3d(0, ${item.y.toFixed(2)}px, 0) scale(${item.scale.toFixed(4)})`;
-        settling ||= Math.abs(item.targetY - item.y) > 0.08 || Math.abs(item.targetScale - item.scale) > 0.0002;
+        item.project.style.opacity = item.opacity.toFixed(3);
+        settling ||= Math.abs(item.targetY - item.y) > 0.08 || Math.abs(item.targetScale - item.scale) > 0.0002 || Math.abs(item.targetOpacity - item.opacity) > 0.002;
       });
 
       if (orb) {
-        orbState.targetY = Math.min(window.scrollY * 0.11, 110);
+        orbState.targetY = Math.min(window.scrollY * 0.16, 150);
         orbState.y += (orbState.targetY - orbState.y) * 0.09;
         orb.style.transform = `translate3d(0, ${orbState.y.toFixed(2)}px, 0)`;
         settling ||= Math.abs(orbState.targetY - orbState.y) > 0.08;
