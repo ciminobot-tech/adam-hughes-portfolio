@@ -67,4 +67,4 @@ body { margin:0; background:var(--paper); color:var(--ink); font-family:Manrope,
 .hero-volume[data-volume="0"] .hero-copy h1{color:#151515;text-shadow:0 1px 16px rgba(255,255,255,.42)}
 .hero-volume[data-volume="0"] .hero-copy .eyebrow,.hero-volume[data-volume="0"] .hero-copy .hero-bottom{color:#181818;text-shadow:0 1px 14px rgba(255,255,255,.58)}
 .hero-volume[data-volume="0"] .hero-copy .circle-link{border-color:#171717;color:#171717}
-@media(max-width:650px){.hero-volume[data-volume="0"] .volume-stage{background-image:url('assets/Automotive/automotive-volume-stage-mobile.png');background-position:center center}.hero-volume[data-volume="0"] .hero-copy h1{color:#111;text-shadow:0 1px 12px rgba(255,255,255,.65)}}
+@media(max-width:650px){.hero-volume[data-volume="0"] .volume-stage{background-image:url('assets/Automotive/automotive-volume-stage-mobile-v2.png');background-position:center center}.hero-volume[data-volume="0"] .hero-copy h1{color:#111;text-shadow:0 1px 12px rgba(255,255,255,.65)}}
