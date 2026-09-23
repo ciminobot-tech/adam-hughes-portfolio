@@ -15,6 +15,8 @@ if (volume && !reduceMotion.matches) {
   const titles = ['Automotive', 'Fashion', 'Commercial', 'Branding'];
   const title = volume.querySelector('[data-volume-title]');
   const count = volume.querySelector('[data-volume-count]');
+  const ledTitle = volume.querySelector('[data-led-title]');
+  const ledNumber = volume.querySelector('[data-led-number]');
   let active = -1;
   const renderVolume = () => {
     const rect = volume.getBoundingClientRect();
@@ -22,10 +24,13 @@ if (volume && !reduceMotion.matches) {
     const progress = Math.max(0, Math.min(0.999, -rect.top / travel));
     const scene = Math.min(3, Math.floor(progress * 4));
     volume.style.setProperty('--volume-progress', progress.toFixed(3));
+    volume.style.setProperty('--camera-pan', `${(Math.sin(progress * Math.PI * 3) * 7).toFixed(2)}vw`);
     if (scene !== active) {
       active = scene;
       volume.dataset.volume = String(scene);
       if (title) title.textContent = titles[scene];
+      if (ledTitle) ledTitle.textContent = titles[scene];
+      if (ledNumber) ledNumber.textContent = `0${scene + 1}`;
       if (count) count.textContent = `0${scene + 1} / 04`;
     }
   };
