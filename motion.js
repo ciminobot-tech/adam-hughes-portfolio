@@ -19,9 +19,11 @@ if (volume && !reduceMotion.matches) {
     const rect = volume.getBoundingClientRect();
     const travel = Math.max(1, rect.height - window.innerHeight);
     const progress = Math.max(0, Math.min(1, -rect.top / travel));
-    // Standing at the first bay and looking right: Porsche leaves through the
-    // left of frame while the adjoining Fashion bay arrives from the right.
-    volume.style.setProperty('--stage-x', `${(-progress * 100).toFixed(3)}vw`);
+    // One continuous LED wall: the opening Porsche bay is the right-hand
+    // portion of the wall. As the visitor scrolls, the wall carries right,
+    // taking the Porsche out through the right edge and revealing the
+    // adjoining Fashion portion from the left. There is no scene cut.
+    volume.style.setProperty('--stage-x', `${(-100 + progress * 100).toFixed(3)}vw`);
     volume.dataset.volume = progress < .5 ? '0' : '1';
     if (copy) copy.style.opacity = String(Math.max(0, 1 - progress * 4));
   };
