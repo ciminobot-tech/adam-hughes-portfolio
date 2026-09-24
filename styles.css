@@ -37,7 +37,7 @@ body { margin:0; background:var(--paper); color:var(--ink); font-family:Manrope,
 .volume-wall{position:absolute;left:-12%;top:9%;width:124%;height:61%;border-radius:0 0 48% 48% / 0 0 15% 15%;overflow:hidden;transform:rotateX(1.5deg);background:#151819;box-shadow:0 20px 40px rgba(0,0,0,.65),inset 0 0 0 5px #171a1c,inset 0 0 80px #000}
 .led-poster-title{position:absolute;z-index:4;left:8%;bottom:11%;display:grid;gap:3px;color:#fff;text-shadow:0 2px 12px rgba(0,0,0,.72);text-transform:uppercase}.led-poster-title span,.led-poster-title small{font:500 8px 'DM Mono',monospace;letter-spacing:.12em}.led-poster-title strong{font:800 clamp(26px,4vw,58px)/.85 Manrope,sans-serif;letter-spacing:-.08em}
 .volume-image,.floor-image,.subject-image{position:absolute;inset:0;background-size:cover;background-position:center;opacity:0;transition:opacity 0s linear,transform 0s linear;will-change:opacity,transform}
-.volume-image{filter:contrast(1.04) saturate(.88);transform:scale(1.08)}.volume-image:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.03),rgba(0,0,0,.38))}.led-grid{position:absolute;inset:0;opacity:.18;background-image:linear-gradient(rgba(255,255,255,.18) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.13) 1px,transparent 1px);background-size:8px 8px;mix-blend-mode:overlay;pointer-events:none}.volume-edge{position:absolute;inset:0;border:1px solid rgba(255,255,255,.28);border-radius:inherit;box-shadow:inset 0 -24px 35px rgba(0,0,0,.42);pointer-events:none}
+.volume-image{background-size:contain;background-repeat:no-repeat;background-color:#070809;filter:contrast(1.04) saturate(.88);transform:scale(1)}.volume-image:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.03),rgba(0,0,0,.38))}.led-grid{position:absolute;inset:0;opacity:.18;background-image:linear-gradient(rgba(255,255,255,.18) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.13) 1px,transparent 1px);background-size:8px 8px;mix-blend-mode:overlay;pointer-events:none}.volume-edge{position:absolute;inset:0;border:1px solid rgba(255,255,255,.28);border-radius:inherit;box-shadow:inset 0 -24px 35px rgba(0,0,0,.42);pointer-events:none}
 .volume-floor{position:absolute;left:-15%;bottom:-25%;width:130%;height:57%;overflow:hidden;transform:perspective(950px) rotateX(61deg);transform-origin:center top;background:linear-gradient(#1d2224,#050606 70%);box-shadow:0 -4px 20px #000}.floor-image{filter:brightness(.5) saturate(.62);transform:scale(1.18)}.floor-image:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(4,6,7,.12),rgba(4,6,7,.93) 83%)}.floor-grid{position:absolute;inset:0;background:linear-gradient(90deg,rgba(255,255,255,.15) 1px,transparent 1px),linear-gradient(rgba(255,255,255,.14) 1px,transparent 1px);background-size:10% 11%;mask-image:linear-gradient(to bottom,#000,transparent 88%);opacity:.38}.stage-pool{position:absolute;left:50%;top:14%;width:55%;height:62%;transform:translateX(-50%);background:radial-gradient(ellipse,rgba(239,242,235,.2),transparent 68%);filter:blur(15px)}
 .stage-subject{position:absolute;z-index:2;left:50%;bottom:16%;width:min(33vw,470px);height:min(29vw,390px);transform:translateX(-50%);filter:drop-shadow(0 22px 16px rgba(0,0,0,.72));pointer-events:none}.subject-image{clip-path:polygon(10% 100%,16% 27%,39% 13%,76% 17%,93% 100%);background-size:145%;background-position:center 57%;transform:translateY(100px) scale(.86);filter:contrast(1.2) saturate(.82)}.stage-subject:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 48%,rgba(0,0,0,.72));clip-path:inherit}
 .volume-status{position:absolute;z-index:7;bottom:24px;left:3.1vw;right:3.1vw;display:grid;grid-template-columns:1fr 1fr 1fr;color:rgba(245,242,234,.83);font:500 9px 'DM Mono',monospace;letter-spacing:.1em;text-transform:uppercase}.volume-status span:nth-child(2){text-align:center}.volume-status span:last-child{text-align:right}
@@ -69,14 +69,14 @@ body { margin:0; background:var(--paper); color:var(--ink); font-family:Manrope,
    across that single stage while the original poster changes on the LED wall.
 */
 .hero-volume{height:400vh;min-height:2600px;background:#080a0b}
-.volume-stage{width:170vw;transform:translate3d(var(--camera-pan,-35vw),0,0);transition:transform 80ms linear;background:radial-gradient(ellipse at 50% 88%,#4a5155 0,transparent 35%),#080a0b}
+.volume-stage{width:100vw;transform:none;transition:none;background:radial-gradient(ellipse at 50% 88%,#4a5155 0,transparent 35%),#080a0b}
 .volume-wall{left:7%;width:86%;top:8%;height:60%;border-radius:0 0 42% 42% / 0 0 14% 14%}
 .volume-floor{left:0;width:100%;bottom:-22%;height:59%}
 .floor-image{display:none}
-.stage-subject{left:50%;bottom:15%;width:min(34vw,500px);height:min(31vw,430px);transform:translate3d(calc(-50% + var(--asset-x,0vw)),0,0);transition:none;will-change:transform}
+.stage-subject{left:50%;bottom:15%;width:min(34vw,500px);height:min(31vw,430px);transform:translateX(-50%);transition:none;will-change:transform}
 .stage-subject:after{display:none}
 .stage-subject span{display:none}
-.subject-image{clip-path:none;border:0;background-size:contain;background-repeat:no-repeat;background-position:center bottom;mix-blend-mode:screen;filter:contrast(1.12) saturate(.98);box-shadow:none}
+.subject-image{clip-path:none;border:0;background-size:contain;background-repeat:no-repeat;background-position:center bottom;mix-blend-mode:screen;filter:contrast(1.12) saturate(.98);box-shadow:none;transform:none!important}
 .hero-volume[data-volume="0"] .stage-subject{width:min(45vw,650px);height:min(30vw,420px);bottom:14%}
 .hero-volume[data-volume="0"] .subject-image.scene-0{background-image:url('assets/Automotive/porsche-cgi-stage.png');background-size:contain;background-position:center bottom;mix-blend-mode:screen}
 .hero-volume[data-volume="1"] .subject-image.scene-1{background-image:url('assets/Fashion/fashion-floor-asset-v1.png')}
@@ -89,7 +89,7 @@ body { margin:0; background:var(--paper); color:var(--ink); font-family:Manrope,
 .hero-volume[data-volume="1"] .hero-copy,.hero-volume[data-volume="2"] .hero-copy,.hero-volume[data-volume="3"] .hero-copy{opacity:.14;transform:translateY(-12px)}
 @media(max-width:650px){
   .hero-volume{height:400vh;min-height:2500px}
-  .volume-stage{width:220vw;transform:translate3d(var(--camera-pan,-60vw),0,0)}
+  .volume-stage{width:100vw;transform:none}
   .volume-wall{left:8%;width:84%;top:8%;height:49%}
   .volume-floor{height:49%;bottom:-16%}
   .stage-subject{width:70vw;height:72vw;bottom:23%}

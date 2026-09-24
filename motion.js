@@ -39,22 +39,23 @@ if (volume && !reduceMotion.matches) {
     const scene = Math.min(3, Math.floor(sceneProgress));
     const withinScene = sceneProgress - scene;
     volume.style.setProperty('--volume-progress', progress.toFixed(3));
-    // The object glides across the deck first. The camera then joins that
-    // movement with a soft ease, so no scroll position produces a step.
-    const objectMix = smooth(withinScene / 0.76);
-    const assetX = -42 + objectMix * 84;
-    const cameraIndex = Math.min(3, scene);
-    const nextCamera = cameraStops[Math.min(3, cameraIndex + 1)];
-    const cameraMix = smooth((withinScene - 0.38) / 0.62);
-    const cameraPosition = cameraStops[cameraIndex] + (nextCamera - cameraStops[cameraIndex]) * cameraMix;
-    volume.style.setProperty('--camera-pan', `${cameraPosition.toFixed(2)}vw`);
-    volume.style.setProperty('--asset-x', `${assetX.toFixed(2)}vw`);
-    // Crossfade the LED poster and floor object as the camera reaches its new
-    // bay, rather than replacing either at a single scroll threshold.
+    // The object is physically locked to the stage. Scroll now drives only
+    // the LED wall: its original photo glides behind the stationary object.
+    const posterTravel = -34 + smooth(withinScene) * 68;
+    volume.style.setProperty('--poster-x', `${posterTravel.toFixed(2)}%`);
+    // Crossfade the LED poster and its corresponding floor object as the
+    // background arrives in the next bay, rather than replacing either at a
+    // single threshold.
     const incomingMix = smooth((withinScene - 0.70) / 0.30);
     sceneLayers.forEach((layers, index) => {
       const opacity = index === scene ? 1 - incomingMix : index === Math.min(3, scene + 1) ? incomingMix : 0;
       layers.forEach((layer) => { layer.style.opacity = opacity.toFixed(3); });
+    });
+    sceneLayers[scene]?.forEach((layer) => {
+      if (layer.classList.contains('volume-image')) layer.style.transform = `translate3d(${posterTravel.toFixed(2)}%,0,0) scale(1)`;
+    });
+    sceneLayers[Math.min(3, scene + 1)]?.forEach((layer) => {
+      if (layer.classList.contains('volume-image')) layer.style.transform = `translate3d(${(posterTravel + 68).toFixed(2)}%,0,0) scale(1)`;
     });
     if (scene !== active) {
       active = scene;
