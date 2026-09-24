@@ -98,3 +98,25 @@ body { margin:0; background:var(--paper); color:var(--ink); font-family:Manrope,
 .physical-asset-fashion{left:50%;background-image:url('assets/Fashion/fashion-floor-asset-v1.png');transform:translateX(50vw);opacity:0}
 .hero-volume .hero-copy{z-index:5}.hero-volume[data-volume] .hero-copy h1{color:#f6f4ee;text-shadow:0 3px 26px rgba(0,0,0,.72)}.hero-volume[data-volume] .hero-copy .eyebrow,.hero-volume[data-volume] .hero-copy .hero-bottom{color:#f0ede6;text-shadow:0 2px 14px #000}.hero-volume[data-volume] .hero-copy .circle-link{border-color:#f3f1eb;color:#f3f1eb}
 @media(max-width:650px){.hero-volume .volume-stage{width:100vw}.continuous-wall{left:-42vw;width:184vw;top:9vh;height:51vh;border-radius:0 0 49% 49% / 0 0 13% 13%}.continuous-floor{bottom:-28vh;height:52vh;transform:perspective(680px) rotateX(62deg)}.physical-asset{width:92vw;height:73vw;bottom:19vh}}
+
+/* The first two pieces live in the same physical LED volume. There is no
+   second screen: the Fashion content dissolves across the existing wall. */
+.hero-volume{height:380vh;min-height:2700px;overflow:visible;clip-path:inset(0)}
+.hero-volume .volume-stage{position:sticky;top:0;width:100vw;height:100vh;min-height:680px;overflow:hidden;transform:none!important;background:#090a0b}
+.continuous-wall,.continuous-floor,.physical-asset{display:none}
+.stage-layer{position:absolute;inset:0;background:center/cover no-repeat;transform-origin:center;will-change:opacity,transform}
+.stage-layer-auto{z-index:0;background-image:url('assets/Automotive/automotive-volume-stage.png')}
+.stage-layer-fashion-wall{z-index:1;left:3%;right:3%;top:8%;bottom:33%;background:#4a0b14 url('assets/Fashion/fashion.jpg') center/contain no-repeat;clip-path:polygon(0 0,100% 0,100% 87%,88% 94%,68% 98%,50% 100%,32% 98%,12% 94%,0 87%);opacity:var(--fashion-mix,0)}
+.stage-layer-fashion-floor{z-index:2;background-image:url('assets/Fashion/fashion-volume-stage-v1.png');clip-path:polygon(0 64%,100% 64%,100% 100%,0 100%);opacity:var(--fashion-mix,0)}
+.stage-fashion-asset{position:absolute;z-index:3;right:9vw;bottom:7vh;width:min(28vw,430px);height:min(50vw,650px);background:url('assets/Fashion/fashion-floor-asset-v1.png') center bottom/contain no-repeat;filter:drop-shadow(0 24px 13px rgba(0,0,0,.72));opacity:var(--fashion-asset,0);will-change:transform,opacity}
+.hero-volume .hero-copy{z-index:4;transition:opacity 220ms linear}
+@media(max-width:650px){.hero-volume .volume-stage{width:100vw}.stage-layer-auto{background-position:57% center}.stage-fashion-asset{right:2vw;bottom:13vh;width:54vw;height:88vw}}
+
+/* One authored panorama: the viewport pans across a continuous LED volume. */
+.hero-volume{height:420vh;min-height:3000px}
+.hero-volume[data-volume] .panorama-stage{position:sticky;top:0;width:100vw;height:100vh;min-height:680px;overflow:hidden;transform:none!important;background:#080909 url('assets/Volume/continuous-porsche-fashion-panorama-v1.png') 0% center/auto 100% no-repeat}
+.hero-volume .panorama-stage:before{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(0,0,0,.12),transparent 26%,transparent 74%,rgba(0,0,0,.08));pointer-events:none}
+.hero-volume[data-volume] .hero-copy h1{color:#f5f1ea;text-shadow:0 3px 22px rgba(0,0,0,.72)}
+.hero-volume[data-volume] .hero-copy .eyebrow,.hero-volume[data-volume] .hero-copy .hero-bottom{color:#f5f1ea;text-shadow:0 2px 14px #000}
+.hero-volume[data-volume] .hero-copy .circle-link{color:#f5f1ea;border-color:#f5f1ea}
+@media(max-width:650px){.hero-volume{height:390vh;min-height:2700px}.hero-volume[data-volume] .panorama-stage{background-size:auto 82%;background-position:0% center}}
