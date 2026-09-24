@@ -127,3 +127,34 @@ body { margin:0; background:var(--paper); color:var(--ink); font-family:Manrope,
   .subject-0{left:50vw}.subject-1{left:150vw}.subject-2{left:250vw}.subject-3{left:350vw}
   .led-title-0{left:2%;bottom:10%}.led-title-1{left:27%;bottom:10%}.led-title-2{left:52%;bottom:10%}.led-title-3{left:77%;bottom:10%}
 }
+
+/* Restore a single cinematic LED volume. The work transitions inside one
+   curved screen; the visitor never sees a row of separate technical panels. */
+.hero-volume{height:480vh;min-height:3200px;clip-path:none}
+.volume-stage{width:100vw;transform:none;background:#080a0b}
+.volume-rig{left:5%;right:5%;transform:translateX(var(--camera-x,0vw));opacity:.55}
+.volume-wall{left:-12%;width:124%;top:5%;height:70%;border-radius:0 0 49% 49% / 0 0 20% 20%;transform:translateX(var(--camera-x,0vw)) rotateX(1.5deg);transition:transform 0s linear}
+.volume-floor{left:-15%;width:130%;height:61%;bottom:-24%;transform:translateX(var(--camera-x,0vw)) perspective(950px) rotateX(61deg);transition:transform 0s linear}
+.volume-image{inset:0;width:auto;height:auto;opacity:0!important;transform:none!important;background-size:contain;background-position:center;background-color:#070809;transition:opacity 420ms ease!important}
+.hero-volume[data-volume="0"] .volume-image.scene-0,.hero-volume[data-volume="1"] .volume-image.scene-1,.hero-volume[data-volume="2"] .volume-image.scene-2,.hero-volume[data-volume="3"] .volume-image.scene-3{opacity:1!important}
+.led-grid{opacity:.16}
+.led-title-0,.led-title-1,.led-title-2,.led-title-3{left:8%;bottom:11%;opacity:0;transition:opacity 250ms ease}
+.hero-volume[data-volume="0"] .led-title-0,.hero-volume[data-volume="1"] .led-title-1,.hero-volume[data-volume="2"] .led-title-2,.hero-volume[data-volume="3"] .led-title-3{opacity:1}
+.stage-subject{left:50%;bottom:16%;width:min(28vw,410px);height:min(23vw,330px);transform:translateX(calc(-50% + var(--camera-x,0vw)));opacity:0!important;transition:opacity 360ms ease!important;filter:drop-shadow(0 18px 8px rgba(0,0,0,.9));will-change:transform,opacity}
+.subject-0,.subject-1,.subject-2,.subject-3{left:50%}
+.hero-volume[data-volume="0"] .subject-0,.hero-volume[data-volume="1"] .subject-1,.hero-volume[data-volume="2"] .subject-2,.hero-volume[data-volume="3"] .subject-3{opacity:1!important}
+.hero-volume[data-volume="0"] .stage-subject{width:min(33vw,480px);height:min(25vw,360px)}
+.subject-0 .subject-image{background-image:url('assets/Automotive/porsche-cgi-stage.png');mix-blend-mode:screen;filter:contrast(1.08) saturate(.96)}
+.subject-1 .subject-image{background-image:url('assets/Fashion/fashion-floor-asset-v1.png');mix-blend-mode:normal;filter:none}
+.subject-2 .subject-image{background-image:url('assets/Commercial/taycan-floor-cutout-v3.png');mix-blend-mode:normal;filter:none}
+.subject-3 .subject-image{background-image:url('assets/Branding/racing-driver-floor-cutout-v2.png');mix-blend-mode:normal;filter:none}
+.subject-0:before,.subject-1:before,.subject-2:before,.subject-3:before{left:25%;right:25%;bottom:1%;height:7%;background:rgba(0,0,0,.92);filter:blur(9px)}
+.volume-status{left:3.1vw;right:3.1vw;width:auto;transform:none}
+@media(max-width:650px){
+  .hero-volume{height:480vh;min-height:3150px}
+  .volume-stage{width:100vw;transform:none}
+  .volume-wall{left:-32%;width:164%;top:7%;height:54%;transform:translateX(var(--camera-x,0vw)) rotateX(1.5deg)}
+  .volume-floor{left:-20%;width:140%;height:51%;bottom:-17%;transform:translateX(var(--camera-x,0vw)) perspective(680px) rotateX(62deg)}
+  .stage-subject{width:65vw;height:64vw;bottom:23%;transform:translateX(calc(-50% + var(--camera-x,0vw)))}
+  .hero-volume[data-volume="0"] .stage-subject{width:76vw;height:59vw}
+}

@@ -25,11 +25,17 @@ if (volume && !reduceMotion.matches) {
     const rect = volume.getBoundingClientRect();
     const travel = Math.max(1, rect.height - window.innerHeight);
     const progress = Math.max(0, Math.min(0.999, -rect.top / travel));
-    const scene = Math.min(3, Math.floor(progress * 4));
+    const sceneProgress = progress * 4;
+    const scene = Math.min(3, Math.floor(sceneProgress));
+    const withinScene = sceneProgress - scene;
     volume.style.setProperty('--volume-progress', progress.toFixed(3));
-    // Four bays in one continuous wide stage. Each scene and its physical
-    // asset travel together while the camera crosses the curved LED volume.
-    volume.style.setProperty('--stage-x', `${(-progress * 300).toFixed(2)}vw`);
+    // One continuous LED volume. The camera sweeps left → right → left →
+    // right while each matching poster and physical asset takes over.
+    const cameraStops = [-11, 11, -11, 11];
+    const next = cameraStops[Math.min(3, scene + 1)];
+    const t = withinScene * withinScene * (3 - 2 * withinScene);
+    const cameraX = cameraStops[scene] + (next - cameraStops[scene]) * t;
+    volume.style.setProperty('--camera-x', `${cameraX.toFixed(2)}vw`);
     if (scene !== active) {
       active = scene;
       volume.dataset.volume = String(scene);
