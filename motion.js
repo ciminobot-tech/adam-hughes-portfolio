@@ -13,17 +13,27 @@ const volume = document.querySelector('.hero-volume');
 
 if (volume && !reduceMotion.matches) {
   const copy = volume.querySelector('.hero-copy');
+  const autoAsset = volume.querySelector('.physical-asset-auto');
+  const fashionAsset = volume.querySelector('.physical-asset-fashion');
   let scheduled = false;
   const renderVolume = () => {
     scheduled = false;
     const rect = volume.getBoundingClientRect();
     const travel = Math.max(1, rect.height - window.innerHeight);
     const progress = Math.max(0, Math.min(1, -rect.top / travel));
-    // This is a single wall being viewed in a rightward pan. The Porsche
-    // portion carries left out of the lens while the next portion of the same
-    // wall arrives from the right. The two panes touch edge-to-edge.
-    volume.style.setProperty('--stage-x', `${(-progress * 100).toFixed(3)}vw`);
+    // The wall itself never cuts or gets replaced. Only its image content
+    // travels across one continuous curved LED surface.
+    // The track is twice the wall width, so half its own width is one viewport.
+    volume.style.setProperty('--wall-x', `${(-progress * 50).toFixed(3)}%`);
     volume.dataset.volume = progress < .5 ? '0' : '1';
+    if (autoAsset) {
+      autoAsset.style.transform = `translate3d(calc(-50% - ${(progress * 118).toFixed(2)}vw), 0, 0)`;
+      autoAsset.style.opacity = String(Math.max(0, 1 - Math.max(0, progress - .38) / .24));
+    }
+    if (fashionAsset) {
+      fashionAsset.style.transform = `translate3d(calc(50vw - 50% - ${(progress * 105).toFixed(2)}vw), 0, 0)`;
+      fashionAsset.style.opacity = String(Math.max(0, Math.min(1, (progress - .48) / .24)));
+    }
     if (copy) copy.style.opacity = String(Math.max(0, 1 - progress * 4));
   };
   const requestRender = () => {
