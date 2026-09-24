@@ -8,9 +8,8 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="styles.css?v=volume-eyeline-pan-04" />
+    <link rel="stylesheet" href="styles.css?v=volume-stage-11" />
     <script defer src="motion.js"></script>
-    <script type="module" src="volume.js"></script>
   </head>
   <body>
     <header class="nav">
@@ -22,19 +21,28 @@
     </header>
 
     <main id="top">
-      <section class="volume-tour" data-scene="0" aria-label="Selected work in a virtual production volume">
-        <div class="tour-pin">
-          <canvas class="volume-render" aria-hidden="true"></canvas>
-          <div class="tour-room" aria-hidden="true">
-            <div class="tour-ceiling"><i>VIRTUAL PRODUCTION / LED VOLUME</i></div>
-            <div class="tour-wall">
-              <div class="tour-poster poster-0"></div><div class="tour-poster poster-1"></div><div class="tour-poster poster-2"></div><div class="tour-poster poster-3"></div>
-              <div class="tour-title title-0"><span>01 / 04</span><strong>Automotive</strong></div><div class="tour-title title-1"><span>02 / 04</span><strong>Fashion</strong></div><div class="tour-title title-2"><span>03 / 04</span><strong>Commercial</strong></div><div class="tour-title title-3"><span>04 / 04</span><strong>Branding</strong></div>
-            </div>
-            <div class="tour-floor"><div></div></div>
-            <div class="tour-asset asset-0"></div><div class="tour-asset asset-1"></div><div class="tour-asset asset-2"></div><div class="tour-asset asset-3"></div>
+      <section class="hero hero-volume" data-volume="0">
+        <div class="volume-stage" aria-hidden="true">
+          <div class="volume-rig"><span></span><span></span><span></span><i>LED VOLUME / LIVE STAGE</i></div>
+          <div class="volume-wall">
+            <div class="volume-image scene-0"></div><div class="volume-image scene-1"></div>
+            <div class="led-grid"></div><div class="led-poster-title led-title-0"><span>01</span><strong>Automotive</strong><small>ADAM HUGHES / SELECTED WORK</small></div><div class="led-poster-title led-title-1"><span>02</span><strong>Fashion</strong><small>ADAM HUGHES / SELECTED WORK</small></div><div class="volume-edge"></div>
           </div>
-          <div class="tour-caption"><p class="eyebrow">Dubai, UAE / Senior creative leadership</p><h1>Built on set.<br /><em>Made to move.</em></h1><p data-tour-name>Automotive / 01</p></div>
+          <div class="volume-floor">
+            <div class="floor-image scene-0"></div><div class="floor-image scene-1"></div><div class="floor-image scene-2"></div><div class="floor-image scene-3"></div>
+            <div class="floor-grid"></div><div class="stage-pool"></div>
+          </div>
+          <div class="stage-subject subject-0"><div class="subject-image scene-0"></div></div>
+          <div class="stage-subject subject-1"><div class="subject-image scene-1"></div></div>
+          <div class="volume-status"><span>VOLUME 01</span><span data-volume-title>Automotive</span><span data-volume-count>01 / 02</span></div>
+        </div>
+        <div class="hero-copy">
+          <p class="eyebrow">Dubai, UAE / Senior creative leadership</p>
+          <h1>Built on set.<br /><em>Made to move.</em></h1>
+          <div class="hero-bottom">
+            <p>Senior creative filmmaker and leader. From first frame to final delivery, I master the latest AI tools and blend them with a wealth of knowledge from years of production experience to create beauty at speed and with heart.</p>
+            <a class="circle-link" href="#work" aria-label="See selected work">↓</a>
+          </div>
         </div>
       </section>
 
