@@ -9,51 +9,38 @@ const motionGroups = [
 
 const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 const orb = document.querySelector('.hero-orb');
-const volume = document.querySelector('.hero-volume');
+const tour = document.querySelector('.volume-tour');
 
-if (volume && !reduceMotion.matches) {
-  const titles = ['Automotive', 'Fashion', 'Commercial', 'Branding'];
-  const title = volume.querySelector('[data-volume-title]');
-  const count = volume.querySelector('[data-volume-count]');
-  const ledTitle = volume.querySelector('[data-led-title]');
-  const ledNumber = volume.querySelector('[data-led-number]');
-  let active = -1;
+if (tour && !reduceMotion.matches) {
+  const names = ['Automotive / 01', 'Fashion / 02', 'Commercial / 03', 'Branding / 04'];
+  const name = tour.querySelector('[data-tour-name]');
+  const stops = [-9, 9, -9, 9];
   let scheduled = false;
-  const clamp = (value) => Math.max(0, Math.min(1, value));
-  const renderVolume = () => {
+  let active = -1;
+  const renderTour = () => {
     scheduled = false;
-    const rect = volume.getBoundingClientRect();
+    const rect = tour.getBoundingClientRect();
     const travel = Math.max(1, rect.height - window.innerHeight);
-    const progress = Math.max(0, Math.min(0.999, -rect.top / travel));
+    const progress = Math.max(0, Math.min(.999, -rect.top / travel));
     const sceneProgress = progress * 4;
     const scene = Math.min(3, Math.floor(sceneProgress));
-    const withinScene = sceneProgress - scene;
-    volume.style.setProperty('--volume-progress', progress.toFixed(3));
-    // One continuous LED volume. The camera sweeps left → right → left →
-    // right while each matching poster and physical asset takes over.
-    const cameraStops = [-11, 11, -11, 11];
-    const next = cameraStops[Math.min(3, scene + 1)];
-    const t = withinScene * withinScene * (3 - 2 * withinScene);
-    const cameraX = cameraStops[scene] + (next - cameraStops[scene]) * t;
-    volume.style.setProperty('--camera-x', `${cameraX.toFixed(2)}vw`);
+    const local = sceneProgress - scene;
+    const ease = local * local * (3 - 2 * local);
+    const next = stops[Math.min(3, scene + 1)];
+    const camera = stops[scene] + (next - stops[scene]) * ease;
+    tour.style.setProperty('--tour-camera', `${camera.toFixed(2)}vw`);
     if (scene !== active) {
       active = scene;
-      volume.dataset.volume = String(scene);
-      if (title) title.textContent = titles[scene];
-      if (ledTitle) ledTitle.textContent = titles[scene];
-      if (ledNumber) ledNumber.textContent = `0${scene + 1}`;
-      if (count) count.textContent = `0${scene + 1} / 04`;
+      tour.dataset.scene = String(scene);
+      if (name) name.textContent = names[scene];
     }
   };
-  const requestVolumeRender = () => {
-    if (!scheduled) {
-      scheduled = true;
-      window.requestAnimationFrame(renderVolume);
-    }
+  const requestTourRender = () => {
+    if (!scheduled) { scheduled = true; window.requestAnimationFrame(renderTour); }
   };
-  window.addEventListener('scroll', requestVolumeRender, { passive: true });
-  window.addEventListener('resize', requestVolumeRender);
-  renderVolume();
+  window.addEventListener('scroll', requestTourRender, { passive: true });
+  window.addEventListener('resize', requestTourRender);
+  renderTour();
 }
 
 if (orb && !reduceMotion.matches) {

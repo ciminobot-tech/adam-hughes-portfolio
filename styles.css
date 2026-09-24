@@ -97,6 +97,33 @@ body { margin:0; background:var(--paper); color:var(--ink); font-family:Manrope,
   .hero-volume[data-volume="1"] .hero-copy,.hero-volume[data-volume="2"] .hero-copy,.hero-volume[data-volume="3"] .hero-copy{opacity:0}
 }
 
+/* Clean virtual-production tour rebuild. */
+.volume-tour{height:500vh;min-height:3400px;background:#070909;color:#f5f2e9;position:relative;clip-path:inset(0)}
+.tour-pin{height:100vh;min-height:680px;position:sticky;top:0;overflow:hidden;background:#070909}
+.tour-room{position:absolute;inset:0;transform:translateX(var(--tour-camera,0vw));will-change:transform}
+.tour-ceiling{position:absolute;z-index:5;left:6%;right:6%;top:0;height:17%;border-top:2px solid rgba(239,236,224,.56);border-bottom:1px solid rgba(239,236,224,.12);background:repeating-linear-gradient(90deg,transparent 0 13%,rgba(239,236,224,.16) 13.1% 13.3%,transparent 13.45% 26%)}
+.tour-ceiling i{position:absolute;top:16px;left:0;font:500 8px 'DM Mono',monospace;letter-spacing:.14em;font-style:normal;color:rgba(244,241,232,.82)}
+.tour-wall{position:absolute;left:-12%;top:8%;width:124%;height:64%;overflow:hidden;border-radius:0 0 38% 38% / 0 0 18% 18%;background:#0e1112;box-shadow:inset 0 0 0 5px #161a1b,inset 0 -70px 100px rgba(0,0,0,.76),0 22px 50px rgba(0,0,0,.8)}
+.tour-wall:after{content:"";position:absolute;inset:0;border:2px solid rgba(248,244,232,.34);border-radius:inherit;pointer-events:none;box-shadow:inset 0 0 70px rgba(0,0,0,.58)}
+.tour-poster{position:absolute;inset:0;opacity:0;background-position:center;background-repeat:no-repeat;background-size:contain;background-color:#090b0c;transition:opacity 500ms cubic-bezier(.22,1,.36,1)}
+.tour-poster:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.02),rgba(0,0,0,.32))}
+.poster-0{background-image:url('assets/Automotive/automotive.jpg')}.poster-1{background-image:url('assets/Fashion/fashion.jpg')}.poster-2{background-image:url('assets/Commercial/commercial.jpg')}.poster-3{background-image:url('assets/Branding/branding.jpg')}
+.volume-tour[data-scene="0"] .poster-0,.volume-tour[data-scene="1"] .poster-1,.volume-tour[data-scene="2"] .poster-2,.volume-tour[data-scene="3"] .poster-3{opacity:1}
+.tour-title{position:absolute;z-index:3;left:9%;bottom:12%;opacity:0;transition:opacity 260ms ease;text-transform:uppercase;text-shadow:0 2px 12px rgba(0,0,0,.85)}
+.tour-title span{display:block;font:500 8px 'DM Mono',monospace;letter-spacing:.14em}.tour-title strong{display:block;margin-top:5px;font:800 clamp(26px,4vw,58px)/.86 Manrope,sans-serif;letter-spacing:-.08em}
+.volume-tour[data-scene="0"] .title-0,.volume-tour[data-scene="1"] .title-1,.volume-tour[data-scene="2"] .title-2,.volume-tour[data-scene="3"] .title-3{opacity:1}
+.tour-floor{position:absolute;left:-15%;bottom:-24%;width:130%;height:61%;transform:perspective(980px) rotateX(61deg);transform-origin:center top;background:linear-gradient(#40474a 0,#161a1c 37%,#050606 88%);box-shadow:0 -8px 32px #000;overflow:hidden}
+.tour-floor:after{content:"";position:absolute;inset:0;background:radial-gradient(ellipse at 50% 8%,rgba(255,255,255,.18),transparent 33%),repeating-linear-gradient(90deg,transparent 0 10%,rgba(255,255,255,.08) 10.1% 10.25%,transparent 10.4% 20%);opacity:.52}
+.tour-asset{position:absolute;z-index:6;left:50%;bottom:16%;width:min(29vw,420px);height:min(23vw,330px);transform:translateX(-50%);opacity:0;pointer-events:none;filter:drop-shadow(0 19px 9px rgba(0,0,0,.9));transition:opacity 380ms ease}
+.tour-asset:after{content:"";position:absolute;left:22%;right:22%;bottom:1%;height:7%;border-radius:50%;background:rgba(0,0,0,.94);filter:blur(9px);z-index:-1}
+.asset-0{background:url('assets/Automotive/porsche-cgi-stage.png') center bottom/contain no-repeat;mix-blend-mode:screen;width:min(34vw,490px);height:min(25vw,360px)}
+.asset-1{background:url('assets/Fashion/fashion-floor-asset-v1.png') center bottom/contain no-repeat}
+.asset-2{background:url('assets/Commercial/taycan-floor-cutout-v3.png') center bottom/contain no-repeat}
+.asset-3{background:url('assets/Branding/racing-driver-floor-cutout-v2.png') center bottom/contain no-repeat}
+.volume-tour[data-scene="0"] .asset-0,.volume-tour[data-scene="1"] .asset-1,.volume-tour[data-scene="2"] .asset-2,.volume-tour[data-scene="3"] .asset-3{opacity:1}
+.tour-caption{position:absolute;z-index:8;left:10vw;right:10vw;bottom:4vh;pointer-events:none}.tour-caption h1{margin:0;color:#f4f1e9;font-size:clamp(50px,8vw,126px);line-height:.83;letter-spacing:-.085em;text-shadow:0 2px 22px rgba(0,0,0,.5)}.tour-caption h1 em{font-family:Georgia,serif;font-weight:400}.tour-caption>p:last-child{position:absolute;right:0;bottom:0;margin:0;font:500 9px 'DM Mono',monospace;letter-spacing:.1em;text-transform:uppercase}
+@media(max-width:650px){.volume-tour{height:500vh;min-height:3300px}.tour-ceiling{left:8%;right:8%;height:13%}.tour-ceiling i{top:9px;font-size:6px}.tour-wall{left:-31%;width:162%;top:8%;height:54%;border-radius:0 0 36% 36% / 0 0 13% 13%}.tour-floor{left:-20%;width:140%;bottom:-17%;height:52%;transform:perspective(680px) rotateX(62deg)}.tour-asset{width:63vw;height:61vw;bottom:23%}.asset-0{width:76vw;height:58vw}.tour-caption{left:20px;right:20px;bottom:28px}.tour-caption h1{font-size:clamp(50px,15vw,75px)}.tour-caption>p:last-child{font-size:7px}.tour-title{left:10%;bottom:11%}.tour-title strong{font-size:34px}}
+
 /* Two-bay proof of the intended volume transition: the camera crosses one
    large physical stage, so the Porsche and its LED image leave together and
    the Fashion bay enters as a new place rather than a swapped background. */
