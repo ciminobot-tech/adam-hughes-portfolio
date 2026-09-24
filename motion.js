@@ -20,8 +20,18 @@ if (volume && !reduceMotion.matches) {
   const count = volume.querySelector('[data-volume-count]');
   const ledTitle = volume.querySelector('[data-led-title]');
   const ledNumber = volume.querySelector('[data-led-number]');
+  const sceneLayers = Array.from({ length: 4 }, (_, index) =>
+    volume.querySelectorAll(`.scene-${index}`),
+  );
   let active = -1;
+  let scheduled = false;
+  const clamp = (value) => Math.max(0, Math.min(1, value));
+  const smooth = (value) => {
+    const t = clamp(value);
+    return t * t * (3 - 2 * t);
+  };
   const renderVolume = () => {
+    scheduled = false;
     const rect = volume.getBoundingClientRect();
     const travel = Math.max(1, rect.height - window.innerHeight);
     const progress = Math.max(0, Math.min(0.999, -rect.top / travel));
@@ -29,16 +39,23 @@ if (volume && !reduceMotion.matches) {
     const scene = Math.min(3, Math.floor(sceneProgress));
     const withinScene = sceneProgress - scene;
     volume.style.setProperty('--volume-progress', progress.toFixed(3));
-    // First 60%: clearly see the object travel from one side of the deck to
-    // the other. Last 40%: it holds while the camera traverses the LED wall.
-    const objectMix = Math.min(1, withinScene / 0.60);
-    const assetX = -34 + objectMix * 68;
+    // The object glides across the deck first. The camera then joins that
+    // movement with a soft ease, so no scroll position produces a step.
+    const objectMix = smooth(withinScene / 0.76);
+    const assetX = -42 + objectMix * 84;
     const cameraIndex = Math.min(3, scene);
     const nextCamera = cameraStops[Math.min(3, cameraIndex + 1)];
-    const cameraMix = Math.max(0, Math.min(1, (withinScene - 0.60) / 0.40));
+    const cameraMix = smooth((withinScene - 0.38) / 0.62);
     const cameraPosition = cameraStops[cameraIndex] + (nextCamera - cameraStops[cameraIndex]) * cameraMix;
     volume.style.setProperty('--camera-pan', `${cameraPosition.toFixed(2)}vw`);
     volume.style.setProperty('--asset-x', `${assetX.toFixed(2)}vw`);
+    // Crossfade the LED poster and floor object as the camera reaches its new
+    // bay, rather than replacing either at a single scroll threshold.
+    const incomingMix = smooth((withinScene - 0.70) / 0.30);
+    sceneLayers.forEach((layers, index) => {
+      const opacity = index === scene ? 1 - incomingMix : index === Math.min(3, scene + 1) ? incomingMix : 0;
+      layers.forEach((layer) => { layer.style.opacity = opacity.toFixed(3); });
+    });
     if (scene !== active) {
       active = scene;
       volume.dataset.volume = String(scene);
@@ -48,8 +65,14 @@ if (volume && !reduceMotion.matches) {
       if (count) count.textContent = `0${scene + 1} / 04`;
     }
   };
-  window.addEventListener('scroll', renderVolume, { passive: true });
-  window.addEventListener('resize', renderVolume);
+  const requestVolumeRender = () => {
+    if (!scheduled) {
+      scheduled = true;
+      window.requestAnimationFrame(renderVolume);
+    }
+  };
+  window.addEventListener('scroll', requestVolumeRender, { passive: true });
+  window.addEventListener('resize', requestVolumeRender);
   renderVolume();
 }
 
