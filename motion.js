@@ -12,7 +12,7 @@ const orb = document.querySelector('.hero-orb');
 const volume = document.querySelector('.hero-volume');
 
 if (volume && !reduceMotion.matches) {
-  const titles = ['Automotive', 'Fashion'];
+  const titles = ['Automotive', 'Fashion', 'Commercial', 'Branding'];
   const title = volume.querySelector('[data-volume-title]');
   const count = volume.querySelector('[data-volume-count]');
   const ledTitle = volume.querySelector('[data-led-title]');
@@ -25,19 +25,18 @@ if (volume && !reduceMotion.matches) {
     const rect = volume.getBoundingClientRect();
     const travel = Math.max(1, rect.height - window.innerHeight);
     const progress = Math.max(0, Math.min(0.999, -rect.top / travel));
-    const scene = progress < 0.5 ? 0 : 1;
+    const scene = Math.min(3, Math.floor(progress * 4));
     volume.style.setProperty('--volume-progress', progress.toFixed(3));
-    // One continuous wide stage: Automotive starts in the left bay. Scroll
-    // travels the camera through it, carrying the Porsche off left and
-    // revealing Fashion and its asset from the right.
-    volume.style.setProperty('--stage-x', `${(-progress * 100).toFixed(2)}vw`);
+    // Four bays in one continuous wide stage. Each scene and its physical
+    // asset travel together while the camera crosses the curved LED volume.
+    volume.style.setProperty('--stage-x', `${(-progress * 300).toFixed(2)}vw`);
     if (scene !== active) {
       active = scene;
       volume.dataset.volume = String(scene);
       if (title) title.textContent = titles[scene];
       if (ledTitle) ledTitle.textContent = titles[scene];
       if (ledNumber) ledNumber.textContent = `0${scene + 1}`;
-      if (count) count.textContent = `0${scene + 1} / 02`;
+      if (count) count.textContent = `0${scene + 1} / 04`;
     }
   };
   const requestVolumeRender = () => {

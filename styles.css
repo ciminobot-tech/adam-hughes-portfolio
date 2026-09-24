@@ -100,28 +100,30 @@ body { margin:0; background:var(--paper); color:var(--ink); font-family:Manrope,
 /* Two-bay proof of the intended volume transition: the camera crosses one
    large physical stage, so the Porsche and its LED image leave together and
    the Fashion bay enters as a new place rather than a swapped background. */
-.hero-volume{height:260vh;min-height:1750px;overflow:visible;clip-path:inset(0)}
-.volume-stage{width:200vw;transform:translate3d(var(--stage-x,0vw),0,0);background:#080a0b}
+.hero-volume{height:480vh;min-height:3200px;overflow:visible;clip-path:inset(0)}
+.volume-stage{width:400vw;transform:translate3d(var(--stage-x,0vw),0,0);background:#080a0b}
 .volume-rig{left:3%;right:3%}
-.volume-wall{left:0;width:200vw;top:8%;height:60%;border-radius:0 0 38% 38% / 0 0 14% 14%}
-.volume-image{top:0;bottom:0;width:50%;height:auto;opacity:1!important;transform:none!important;background-size:contain;background-position:center;background-color:#070809}
-.volume-image.scene-0{left:0;right:auto}.volume-image.scene-1{left:50%;right:auto}
-.led-title-0{left:7%;bottom:11%}.led-title-1{left:57%;bottom:11%}
-.volume-floor{left:0;width:200vw;bottom:-22%;height:59%}
+.volume-wall{left:0;width:400vw;top:5%;height:68%;border-radius:0 0 47% 47% / 0 0 19% 19%}
+.volume-image{top:0;bottom:0;width:25%;height:auto;opacity:1!important;transform:none!important;background-size:contain;background-position:center;background-color:#070809}
+.volume-image.scene-0{left:0;right:auto}.volume-image.scene-1{left:25%;right:auto}.volume-image.scene-2{left:50%;right:auto}.volume-image.scene-3{left:75%;right:auto}
+.led-title-0{left:2%;bottom:11%}.led-title-1{left:27%;bottom:11%}.led-title-2{left:52%;bottom:11%}.led-title-3{left:77%;bottom:11%}
+.volume-floor{left:0;width:400vw;bottom:-22%;height:59%}
 .volume-floor .floor-grid{width:100%}
 .stage-subject{z-index:5;width:min(40vw,590px);height:min(31vw,440px);bottom:15%;transform:translateX(-50%);filter:drop-shadow(0 24px 10px rgba(0,0,0,.82));opacity:1!important}
 .stage-subject .subject-image{opacity:1!important}
-.subject-0{left:50vw}.subject-1{left:150vw}
+.subject-0{left:50vw}.subject-1{left:150vw}.subject-2{left:250vw}.subject-3{left:350vw}
 .subject-0 .subject-image{background-image:url('assets/Automotive/porsche-cgi-stage.png');background-size:contain;background-repeat:no-repeat;background-position:center bottom;mix-blend-mode:screen;filter:contrast(1.08) saturate(.96)}
 .subject-1 .subject-image{background-image:url('assets/Fashion/fashion-floor-asset-v1.png');background-size:contain;background-repeat:no-repeat;background-position:center bottom;mix-blend-mode:normal;filter:none}
-.subject-0:before,.subject-1:before{content:"";position:absolute;z-index:-1;left:18%;right:18%;bottom:3%;height:10%;border-radius:50%;background:rgba(0,0,0,.84);filter:blur(13px)}
+.subject-2 .subject-image{background-image:url('assets/Commercial/taycan-floor-cutout-v3.png');background-size:contain;background-repeat:no-repeat;background-position:center bottom;mix-blend-mode:normal;filter:none}
+.subject-3 .subject-image{background-image:url('assets/Branding/racing-driver-floor-cutout-v2.png');background-size:contain;background-repeat:no-repeat;background-position:center bottom;mix-blend-mode:normal;filter:none}
+.subject-0:before,.subject-1:before,.subject-2:before,.subject-3:before{content:"";position:absolute;z-index:-1;left:18%;right:18%;bottom:3%;height:10%;border-radius:50%;background:rgba(0,0,0,.84);filter:blur(13px)}
 .volume-status{left:2vw;right:auto;width:96vw}
 @media(max-width:650px){
-  .hero-volume{height:240vh;min-height:1580px}
-  .volume-stage{width:200vw;transform:translate3d(var(--stage-x,0vw),0,0)}
-  .volume-wall{width:200vw;height:50%;top:8%}
-  .volume-floor{width:200vw;height:49%;bottom:-16%}
+  .hero-volume{height:480vh;min-height:3150px}
+  .volume-stage{width:400vw;transform:translate3d(var(--stage-x,0vw),0,0)}
+  .volume-wall{width:400vw;height:55%;top:6%}
+  .volume-floor{width:400vw;height:49%;bottom:-16%}
   .stage-subject{width:88vw;height:72vw;bottom:23%}
-  .subject-0{left:50vw}.subject-1{left:150vw}
-  .led-title-0{left:7%;bottom:10%}.led-title-1{left:57%;bottom:10%}
+  .subject-0{left:50vw}.subject-1{left:150vw}.subject-2{left:250vw}.subject-3{left:350vw}
+  .led-title-0{left:2%;bottom:10%}.led-title-1{left:27%;bottom:10%}.led-title-2{left:52%;bottom:10%}.led-title-3{left:77%;bottom:10%}
 }
