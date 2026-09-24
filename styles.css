@@ -100,7 +100,7 @@ body { margin:0; background:var(--paper); color:var(--ink); font-family:Manrope,
 /* Two-bay proof of the intended volume transition: the camera crosses one
    large physical stage, so the Porsche and its LED image leave together and
    the Fashion bay enters as a new place rather than a swapped background. */
-.hero-volume{height:240vh;min-height:1600px;overflow:hidden}
+.hero-volume{height:260vh;min-height:1750px;overflow:visible;clip-path:inset(0)}
 .volume-stage{width:200vw;transform:translate3d(var(--stage-x,0vw),0,0);background:#080a0b}
 .volume-rig{left:3%;right:3%}
 .volume-wall{left:0;width:200vw;top:8%;height:60%;border-radius:0 0 38% 38% / 0 0 14% 14%}
