@@ -13,10 +13,9 @@ const volume = document.querySelector('.hero-volume');
 
 if (volume && !reduceMotion.matches) {
   const titles = ['Automotive', 'Fashion', 'Commercial', 'Branding'];
-  // Deliberately large sweeps: automotive centre → left fashion bay → right
-  // commercial bay → left branding bay. These are camera positions, not a
-  // tiny decorative parallax shift.
-  const cameraStops = [-35, -74, 4, -68];
+  // Each bay has two beats: the physical object crosses the stage floor, then
+  // the camera makes a full sweep to the next section of the LED volume.
+  const cameraStops = [-35, -88, 18, -84];
   const title = volume.querySelector('[data-volume-title]');
   const count = volume.querySelector('[data-volume-count]');
   const ledTitle = volume.querySelector('[data-led-title]');
@@ -26,12 +25,20 @@ if (volume && !reduceMotion.matches) {
     const rect = volume.getBoundingClientRect();
     const travel = Math.max(1, rect.height - window.innerHeight);
     const progress = Math.max(0, Math.min(0.999, -rect.top / travel));
-    const scene = Math.min(3, Math.floor(progress * 4));
+    const sceneProgress = progress * 4;
+    const scene = Math.min(3, Math.floor(sceneProgress));
+    const withinScene = sceneProgress - scene;
     volume.style.setProperty('--volume-progress', progress.toFixed(3));
-    const cameraIndex = Math.min(2, Math.floor(progress * 3));
-    const cameraMix = (progress * 3) - cameraIndex;
-    const cameraPosition = cameraStops[cameraIndex] + (cameraStops[cameraIndex + 1] - cameraStops[cameraIndex]) * cameraMix;
+    // First 60%: clearly see the object travel from one side of the deck to
+    // the other. Last 40%: it holds while the camera traverses the LED wall.
+    const objectMix = Math.min(1, withinScene / 0.60);
+    const assetX = -34 + objectMix * 68;
+    const cameraIndex = Math.min(3, scene);
+    const nextCamera = cameraStops[Math.min(3, cameraIndex + 1)];
+    const cameraMix = Math.max(0, Math.min(1, (withinScene - 0.60) / 0.40));
+    const cameraPosition = cameraStops[cameraIndex] + (nextCamera - cameraStops[cameraIndex]) * cameraMix;
     volume.style.setProperty('--camera-pan', `${cameraPosition.toFixed(2)}vw`);
+    volume.style.setProperty('--asset-x', `${assetX.toFixed(2)}vw`);
     if (scene !== active) {
       active = scene;
       volume.dataset.volume = String(scene);

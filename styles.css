@@ -73,14 +73,17 @@ body { margin:0; background:var(--paper); color:var(--ink); font-family:Manrope,
 .volume-wall{left:7%;width:86%;top:8%;height:60%;border-radius:0 0 42% 42% / 0 0 14% 14%}
 .volume-floor{left:0;width:100%;bottom:-22%;height:59%}
 .floor-image{display:none}
-.stage-subject{left:50%;bottom:15%;width:min(34vw,500px);height:min(31vw,430px)}
+.stage-subject{left:50%;bottom:15%;width:min(34vw,500px);height:min(31vw,430px);transform:translate3d(calc(-50% + var(--asset-x,0vw)),0,0);transition:transform 70ms linear}
 .stage-subject:after{display:none}
-.subject-image{clip-path:none;border:0;background-size:contain;background-repeat:no-repeat;background-position:center bottom;mix-blend-mode:screen;filter:contrast(1.12) saturate(.98)}
+.stage-subject span{display:none}
+.subject-image{clip-path:none;border:0;background-size:contain;background-repeat:no-repeat;background-position:center bottom;mix-blend-mode:screen;filter:contrast(1.12) saturate(.98);box-shadow:none}
 .hero-volume[data-volume="0"] .stage-subject{width:min(45vw,650px);height:min(30vw,420px);bottom:14%}
 .hero-volume[data-volume="0"] .subject-image.scene-0{background-image:url('assets/Automotive/porsche-cgi-stage.png');background-size:contain;background-position:center bottom;mix-blend-mode:screen}
 .hero-volume[data-volume="1"] .subject-image.scene-1{background-image:url('assets/Fashion/fashion-floor-asset-v1.png')}
 .hero-volume[data-volume="2"] .subject-image.scene-2{background-image:url('assets/Commercial/commercial-floor-asset-v1.png');width:120%;left:-10%}
 .hero-volume[data-volume="3"] .subject-image.scene-3{background-image:url('assets/Branding/racing-driver-full-body-3d.png');background-size:contain;background-repeat:no-repeat;background-position:center bottom;mix-blend-mode:screen}
+.hero-volume[data-volume="0"] .subject-image.scene-0{mask-image:radial-gradient(ellipse 54% 46% at 50% 56%,#000 52%,transparent 78%);-webkit-mask-image:radial-gradient(ellipse 54% 46% at 50% 56%,#000 52%,transparent 78%)}
+.hero-volume[data-volume="3"] .subject-image.scene-3{mask-image:radial-gradient(ellipse 32% 52% at 50% 56%,#000 60%,transparent 88%);-webkit-mask-image:radial-gradient(ellipse 32% 52% at 50% 56%,#000 60%,transparent 88%)}
 .hero-volume[data-volume="0"] .stage-subject:before,.hero-volume[data-volume="1"] .stage-subject:before,.hero-volume[data-volume="2"] .stage-subject:before,.hero-volume[data-volume="3"] .stage-subject:before{content:"";position:absolute;z-index:-1;left:18%;right:18%;bottom:3%;height:10%;border-radius:50%;background:rgba(0,0,0,.88);filter:blur(14px)}
 .hero-copy{transition:opacity 250ms ease,transform 250ms ease}
 .hero-volume[data-volume="1"] .hero-copy,.hero-volume[data-volume="2"] .hero-copy,.hero-volume[data-volume="3"] .hero-copy{opacity:.14;transform:translateY(-12px)}
