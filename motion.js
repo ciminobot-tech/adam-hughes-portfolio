@@ -13,7 +13,10 @@ const volume = document.querySelector('.hero-volume');
 
 if (volume && !reduceMotion.matches) {
   const titles = ['Automotive', 'Fashion', 'Commercial', 'Branding'];
-  const cameraStops = [-20, -48, -5, -42];
+  // Deliberately large sweeps: automotive centre → left fashion bay → right
+  // commercial bay → left branding bay. These are camera positions, not a
+  // tiny decorative parallax shift.
+  const cameraStops = [-35, -74, 4, -68];
   const title = volume.querySelector('[data-volume-title]');
   const count = volume.querySelector('[data-volume-count]');
   const ledTitle = volume.querySelector('[data-led-title]');

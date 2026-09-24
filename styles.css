@@ -62,15 +62,35 @@ body { margin:0; background:var(--paper); color:var(--ink); font-family:Manrope,
 .hero-volume[data-volume="0"] .subject-image.scene-0{transform:translateY(0) scale(1)}
 @media(max-width:650px){.hero-volume[data-volume="0"] .stage-subject{width:112vw;height:72vw;bottom:23%}.hero-volume[data-volume="0"] .stage-subject span{left:24%;bottom:10%}}
 
-/* Automotive is a single physical virtual-production render, so the car, floor, wall and light all belong to one coherent space. */
-.hero-volume[data-volume="0"] .volume-stage{background:#111 url('assets/Automotive/automotive-volume-stage.png') center center / cover no-repeat}
-.hero-volume[data-volume="0"] .volume-rig,.hero-volume[data-volume="0"] .volume-wall,.hero-volume[data-volume="0"] .volume-floor,.hero-volume[data-volume="0"] .stage-subject,.hero-volume[data-volume="0"] .volume-status{opacity:0;visibility:hidden}
-.hero-volume[data-volume="0"] .hero-copy h1{color:#151515;text-shadow:0 1px 16px rgba(255,255,255,.42)}
-.hero-volume[data-volume="0"] .hero-copy .eyebrow,.hero-volume[data-volume="0"] .hero-copy .hero-bottom{color:#181818;text-shadow:0 1px 14px rgba(255,255,255,.58)}
-.hero-volume[data-volume="0"] .hero-copy .circle-link{border-color:#171717;color:#171717}
-@media(max-width:650px){.hero-volume[data-volume="0"] .volume-stage{background-image:url('assets/Automotive/automotive-volume-stage-mobile-v2.png');background-position:center center}.hero-volume[data-volume="0"] .hero-copy h1{color:#111;text-shadow:0 1px 12px rgba(255,255,255,.65)}}
-
-/* One oversized volume is viewed through a moving camera. The view travels left, then back right, across the same stage. */
-.hero-volume:not([data-volume="0"]) .volume-stage{width:150vw;transform:translate3d(var(--camera-pan,-20vw),0,0);transition:none}
-.hero-volume[data-volume="3"] .subject-image.scene-3{background-image:url('assets/Branding/racing-driver-full-body-3d.png');background-size:contain;background-repeat:no-repeat;background-position:center bottom;clip-path:none;mix-blend-mode:screen;border:0}
-@media(max-width:650px){.led-poster-title{left:9%;bottom:10%}.led-poster-title strong{font-size:34px}.hero-volume:not([data-volume="0"]) .volume-stage{width:180vw;transform:translate3d(var(--camera-pan,-20vw),0,0) scale(1.03)}}
+/*
+   One real stage is kept on screen for the entire opening.  Crucially, this is
+   not the earlier Automotive pre-render: every chapter uses the same curved
+   wall, floor, rig and physical foreground subject.  Scroll moves the camera
+   across that single stage while the original poster changes on the LED wall.
+*/
+.hero-volume{height:400vh;min-height:2600px;background:#080a0b}
+.volume-stage{width:170vw;transform:translate3d(var(--camera-pan,-35vw),0,0);transition:transform 80ms linear;background:radial-gradient(ellipse at 50% 88%,#4a5155 0,transparent 35%),#080a0b}
+.volume-wall{left:7%;width:86%;top:8%;height:60%;border-radius:0 0 42% 42% / 0 0 14% 14%}
+.volume-floor{left:0;width:100%;bottom:-22%;height:59%}
+.floor-image{display:none}
+.stage-subject{left:50%;bottom:15%;width:min(34vw,500px);height:min(31vw,430px)}
+.stage-subject:after{display:none}
+.subject-image{clip-path:none;border:0;background-size:contain;background-repeat:no-repeat;background-position:center bottom;mix-blend-mode:screen;filter:contrast(1.12) saturate(.98)}
+.hero-volume[data-volume="0"] .stage-subject{width:min(45vw,650px);height:min(30vw,420px);bottom:14%}
+.hero-volume[data-volume="0"] .subject-image.scene-0{background-image:url('assets/Automotive/porsche-cgi-stage.png');background-size:contain;background-position:center bottom;mix-blend-mode:screen}
+.hero-volume[data-volume="1"] .subject-image.scene-1{background-image:url('assets/Fashion/fashion-floor-asset-v1.png')}
+.hero-volume[data-volume="2"] .subject-image.scene-2{background-image:url('assets/Commercial/commercial-floor-asset-v1.png');width:120%;left:-10%}
+.hero-volume[data-volume="3"] .subject-image.scene-3{background-image:url('assets/Branding/racing-driver-full-body-3d.png');background-size:contain;background-repeat:no-repeat;background-position:center bottom;mix-blend-mode:screen}
+.hero-volume[data-volume="0"] .stage-subject:before,.hero-volume[data-volume="1"] .stage-subject:before,.hero-volume[data-volume="2"] .stage-subject:before,.hero-volume[data-volume="3"] .stage-subject:before{content:"";position:absolute;z-index:-1;left:18%;right:18%;bottom:3%;height:10%;border-radius:50%;background:rgba(0,0,0,.88);filter:blur(14px)}
+.hero-copy{transition:opacity 250ms ease,transform 250ms ease}
+.hero-volume[data-volume="1"] .hero-copy,.hero-volume[data-volume="2"] .hero-copy,.hero-volume[data-volume="3"] .hero-copy{opacity:.14;transform:translateY(-12px)}
+@media(max-width:650px){
+  .hero-volume{height:400vh;min-height:2500px}
+  .volume-stage{width:220vw;transform:translate3d(var(--camera-pan,-60vw),0,0)}
+  .volume-wall{left:8%;width:84%;top:8%;height:49%}
+  .volume-floor{height:49%;bottom:-16%}
+  .stage-subject{width:70vw;height:72vw;bottom:23%}
+  .hero-volume[data-volume="0"] .stage-subject{width:95vw;height:67vw;bottom:22%}
+  .led-poster-title{left:9%;bottom:10%}.led-poster-title strong{font-size:34px}
+  .hero-volume[data-volume="1"] .hero-copy,.hero-volume[data-volume="2"] .hero-copy,.hero-volume[data-volume="3"] .hero-copy{opacity:0}
+}
