@@ -15,16 +15,23 @@ if (volume && !reduceMotion.matches) {
   const copy = volume.querySelector('.hero-copy');
   const autoAsset = volume.querySelector('.physical-asset-auto');
   const fashionAsset = volume.querySelector('.physical-asset-fashion');
+  const autoWall = volume.querySelector('.wall-panel-auto');
+  const fashionWall = volume.querySelector('.wall-panel-fashion');
   let scheduled = false;
   const renderVolume = () => {
     scheduled = false;
     const rect = volume.getBoundingClientRect();
     const travel = Math.max(1, rect.height - window.innerHeight);
     const progress = Math.max(0, Math.min(1, -rect.top / travel));
-    // The wall itself never cuts or gets replaced. Only its image content
-    // travels across one continuous curved LED surface.
-    // The track is twice the wall width, so half its own width is one viewport.
-    volume.style.setProperty('--wall-x', `${(-progress * 50).toFixed(3)}%`);
+    // This is one large fixed LED wall. The camera scans from its left side to
+    // its right, then the content on that same surface dissolves into Fashion.
+    const autoImage = Math.max(0, Math.min(1, 1 - (progress - .57) / .20));
+    const fashionImage = Math.max(0, Math.min(1, (progress - .57) / .20));
+    volume.style.setProperty('--auto-image', autoImage.toFixed(3));
+    volume.style.setProperty('--fashion-image', fashionImage.toFixed(3));
+    volume.style.setProperty('--pan', progress.toFixed(3));
+    if (autoWall) autoWall.style.backgroundPosition = `${(50 - progress * 22).toFixed(2)}% center`;
+    if (fashionWall) fashionWall.style.backgroundPosition = `${(68 - progress * 18).toFixed(2)}% center`;
     volume.dataset.volume = progress < .5 ? '0' : '1';
     if (autoAsset) {
       autoAsset.style.transform = `translate3d(calc(-50% - ${(progress * 118).toFixed(2)}vw), 0, 0)`;
