@@ -9,60 +9,29 @@ const motionGroups = [
 
 const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 const orb = document.querySelector('.hero-orb');
-const tour = document.querySelector('.volume-tour');
+const volume = document.querySelector('.hero-volume');
 
-if (tour && !reduceMotion.matches) {
-  const names = ['Automotive / 01', 'Fashion / 02', 'Commercial / 03', 'Branding / 04'];
-  const name = tour.querySelector('[data-tour-name]');
-  const posters = [...tour.querySelectorAll('.tour-poster')];
-  const assets = [...tour.querySelectorAll('.tour-asset')];
-  // Every chapter begins with its asset centred on the stage.  It then tracks
-  // with the LED picture as both leave through alternating sides of the cove.
-  const directions = [-1, 1, -1, 1];
-  let scheduled = false;
+if (volume && !reduceMotion.matches) {
+  const titles = ['Automotive', 'Fashion', 'Commercial', 'Branding'];
+  const title = volume.querySelector('[data-volume-title]');
+  const count = volume.querySelector('[data-volume-count]');
   let active = -1;
-  const renderTour = () => {
-    scheduled = false;
-    const rect = tour.getBoundingClientRect();
+  const renderVolume = () => {
+    const rect = volume.getBoundingClientRect();
     const travel = Math.max(1, rect.height - window.innerHeight);
-    const progress = Math.max(0, Math.min(.999, -rect.top / travel));
-    const sceneProgress = progress * 4;
-    const scene = Math.min(3, Math.floor(sceneProgress));
-    const local = sceneProgress - scene;
-    const ease = local * local * (3 - 2 * local);
-    const direction = directions[scene];
-    const transitionEase = scene === 3 ? 0 : ease;
-    const exit = transitionEase * 78 * direction;
-    const entry = (1 - transitionEase) * -78 * direction;
-
-    posters.forEach((poster, index) => {
-      let x = 0;
-      let opacity = 0;
-      if (index === scene) { x = exit; opacity = 1 - Math.max(0, (transitionEase - .52) / .48); }
-      if (index === scene + 1) { x = entry; opacity = Math.max(0, (transitionEase - .34) / .66); }
-      poster.style.transform = `translate3d(${x.toFixed(2)}vw, 0, 0)`;
-      poster.style.opacity = opacity.toFixed(3);
-    });
-    assets.forEach((asset, index) => {
-      let x = 0;
-      let opacity = 0;
-      if (index === scene) { x = exit; opacity = 1 - Math.max(0, (transitionEase - .48) / .42); }
-      if (index === scene + 1) { x = entry; opacity = Math.max(0, (transitionEase - .50) / .42); }
-      asset.style.transform = `translate3d(calc(-50% + ${x.toFixed(2)}vw), 0, 0)`;
-      asset.style.opacity = opacity.toFixed(3);
-    });
+    const progress = Math.max(0, Math.min(0.999, -rect.top / travel));
+    const scene = Math.min(3, Math.floor(progress * 4));
+    volume.style.setProperty('--volume-progress', progress.toFixed(3));
     if (scene !== active) {
       active = scene;
-      tour.dataset.scene = String(scene);
-      if (name) name.textContent = names[scene];
+      volume.dataset.volume = String(scene);
+      if (title) title.textContent = titles[scene];
+      if (count) count.textContent = `0${scene + 1} / 04`;
     }
   };
-  const requestTourRender = () => {
-    if (!scheduled) { scheduled = true; window.requestAnimationFrame(renderTour); }
-  };
-  window.addEventListener('scroll', requestTourRender, { passive: true });
-  window.addEventListener('resize', requestTourRender);
-  renderTour();
+  window.addEventListener('scroll', renderVolume, { passive: true });
+  window.addEventListener('resize', renderVolume);
+  renderVolume();
 }
 
 if (orb && !reduceMotion.matches) {
