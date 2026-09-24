@@ -12,54 +12,32 @@ const orb = document.querySelector('.hero-orb');
 const volume = document.querySelector('.hero-volume');
 
 if (volume && !reduceMotion.matches) {
-  const titles = ['Automotive', 'Fashion', 'Commercial', 'Branding'];
+  const titles = ['Automotive', 'Fashion'];
   const title = volume.querySelector('[data-volume-title]');
   const count = volume.querySelector('[data-volume-count]');
   const ledTitle = volume.querySelector('[data-led-title]');
   const ledNumber = volume.querySelector('[data-led-number]');
-  const sceneLayers = Array.from({ length: 4 }, (_, index) =>
-    volume.querySelectorAll(`.scene-${index}`),
-  );
   let active = -1;
   let scheduled = false;
   const clamp = (value) => Math.max(0, Math.min(1, value));
-  const smooth = (value) => {
-    const t = clamp(value);
-    return t * t * (3 - 2 * t);
-  };
   const renderVolume = () => {
     scheduled = false;
     const rect = volume.getBoundingClientRect();
     const travel = Math.max(1, rect.height - window.innerHeight);
     const progress = Math.max(0, Math.min(0.999, -rect.top / travel));
-    const sceneProgress = progress * 4;
-    const scene = Math.min(3, Math.floor(sceneProgress));
-    const withinScene = sceneProgress - scene;
+    const scene = progress < 0.5 ? 0 : 1;
     volume.style.setProperty('--volume-progress', progress.toFixed(3));
-    // The object is physically locked to the stage. Scroll now drives only
-    // the LED wall: its original photo glides behind the stationary object.
-    const posterTravel = -34 + smooth(withinScene) * 68;
-    // Crossfade the LED poster and its corresponding floor object as the
-    // background arrives in the next bay, rather than replacing either at a
-    // single threshold.
-    const incomingMix = smooth((withinScene - 0.70) / 0.30);
-    sceneLayers.forEach((layers, index) => {
-      const opacity = index === scene ? 1 - incomingMix : index === Math.min(3, scene + 1) ? incomingMix : 0;
-      layers.forEach((layer) => { layer.style.opacity = opacity.toFixed(3); });
-    });
-    sceneLayers[scene]?.forEach((layer) => {
-      if (layer.classList.contains('volume-image')) layer.style.transform = `translate3d(${posterTravel.toFixed(2)}%,0,0) scale(1)`;
-    });
-    sceneLayers[Math.min(3, scene + 1)]?.forEach((layer) => {
-      if (layer.classList.contains('volume-image')) layer.style.transform = `translate3d(${(posterTravel + 68).toFixed(2)}%,0,0) scale(1)`;
-    });
+    // One continuous wide stage: Automotive starts in the left bay. Scroll
+    // travels the camera through it, carrying the Porsche off left and
+    // revealing Fashion and its asset from the right.
+    volume.style.setProperty('--stage-x', `${(-progress * 100).toFixed(2)}vw`);
     if (scene !== active) {
       active = scene;
       volume.dataset.volume = String(scene);
       if (title) title.textContent = titles[scene];
       if (ledTitle) ledTitle.textContent = titles[scene];
       if (ledNumber) ledNumber.textContent = `0${scene + 1}`;
-      if (count) count.textContent = `0${scene + 1} / 04`;
+      if (count) count.textContent = `0${scene + 1} / 02`;
     }
   };
   const requestVolumeRender = () => {

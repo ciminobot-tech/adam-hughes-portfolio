@@ -96,3 +96,32 @@ body { margin:0; background:var(--paper); color:var(--ink); font-family:Manrope,
   .led-poster-title{left:9%;bottom:10%}.led-poster-title strong{font-size:34px}
   .hero-volume[data-volume="1"] .hero-copy,.hero-volume[data-volume="2"] .hero-copy,.hero-volume[data-volume="3"] .hero-copy{opacity:0}
 }
+
+/* Two-bay proof of the intended volume transition: the camera crosses one
+   large physical stage, so the Porsche and its LED image leave together and
+   the Fashion bay enters as a new place rather than a swapped background. */
+.hero-volume{height:240vh;min-height:1600px;overflow:hidden}
+.volume-stage{width:200vw;transform:translate3d(var(--stage-x,0vw),0,0);background:#080a0b}
+.volume-rig{left:3%;right:3%}
+.volume-wall{left:0;width:200vw;top:8%;height:60%;border-radius:0 0 38% 38% / 0 0 14% 14%}
+.volume-image{top:0;bottom:0;width:50%;height:auto;opacity:1!important;transform:none!important;background-size:contain;background-position:center;background-color:#070809}
+.volume-image.scene-0{left:0;right:auto}.volume-image.scene-1{left:50%;right:auto}
+.led-title-0{left:7%;bottom:11%}.led-title-1{left:57%;bottom:11%}
+.volume-floor{left:0;width:200vw;bottom:-22%;height:59%}
+.volume-floor .floor-grid{width:100%}
+.stage-subject{z-index:5;width:min(40vw,590px);height:min(31vw,440px);bottom:15%;transform:translateX(-50%);filter:drop-shadow(0 24px 10px rgba(0,0,0,.82));opacity:1!important}
+.stage-subject .subject-image{opacity:1!important}
+.subject-0{left:50vw}.subject-1{left:150vw}
+.subject-0 .subject-image{background-image:url('assets/Automotive/porsche-cgi-stage.png');background-size:contain;background-repeat:no-repeat;background-position:center bottom;mix-blend-mode:screen;filter:contrast(1.08) saturate(.96)}
+.subject-1 .subject-image{background-image:url('assets/Fashion/fashion-floor-asset-v1.png');background-size:contain;background-repeat:no-repeat;background-position:center bottom;mix-blend-mode:normal;filter:none}
+.subject-0:before,.subject-1:before{content:"";position:absolute;z-index:-1;left:18%;right:18%;bottom:3%;height:10%;border-radius:50%;background:rgba(0,0,0,.84);filter:blur(13px)}
+.volume-status{left:2vw;right:auto;width:96vw}
+@media(max-width:650px){
+  .hero-volume{height:240vh;min-height:1580px}
+  .volume-stage{width:200vw;transform:translate3d(var(--stage-x,0vw),0,0)}
+  .volume-wall{width:200vw;height:50%;top:8%}
+  .volume-floor{width:200vw;height:49%;bottom:-16%}
+  .stage-subject{width:88vw;height:72vw;bottom:23%}
+  .subject-0{left:50vw}.subject-1{left:150vw}
+  .led-title-0{left:7%;bottom:10%}.led-title-1{left:57%;bottom:10%}
+}
