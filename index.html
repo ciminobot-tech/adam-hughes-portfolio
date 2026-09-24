@@ -8,7 +8,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="styles.css?v=continuous-volume-04" />
+    <link rel="stylesheet" href="styles.css?v=volume-stage-01" />
     <script defer src="motion.js"></script>
   </head>
   <body>
@@ -23,15 +23,17 @@
     <main id="top">
       <section class="hero hero-volume" data-volume="0">
         <div class="volume-stage" aria-hidden="true">
-          <div class="continuous-wall">
-            <div class="wall-track">
-              <div class="wall-panel wall-panel-auto"></div>
-              <div class="wall-panel wall-panel-fashion"></div>
-            </div>
+          <div class="volume-rig"><span></span><span></span><span></span><i>LED VOLUME / LIVE STAGE</i></div>
+          <div class="volume-wall">
+            <div class="volume-image scene-0"></div><div class="volume-image scene-1"></div><div class="volume-image scene-2"></div><div class="volume-image scene-3"></div>
+            <div class="led-grid"></div><div class="volume-edge"></div>
           </div>
-          <div class="continuous-floor"></div>
-          <div class="physical-asset physical-asset-auto"></div>
-          <div class="physical-asset physical-asset-fashion"></div>
+          <div class="volume-floor">
+            <div class="floor-image scene-0"></div><div class="floor-image scene-1"></div><div class="floor-image scene-2"></div><div class="floor-image scene-3"></div>
+            <div class="floor-grid"></div><div class="stage-pool"></div>
+          </div>
+          <div class="stage-subject"><div class="subject-image scene-0"></div><div class="subject-image scene-1"></div><div class="subject-image scene-2"></div><div class="subject-image scene-3"></div><span>SCENE ELEMENT</span></div>
+          <div class="volume-status"><span>VOLUME 01</span><span data-volume-title>Automotive</span><span data-volume-count>01 / 04</span></div>
         </div>
         <div class="hero-copy">
           <p class="eyebrow">Dubai, UAE / Senior creative leadership</p>

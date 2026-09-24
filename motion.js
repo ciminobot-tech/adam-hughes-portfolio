@@ -12,42 +12,25 @@ const orb = document.querySelector('.hero-orb');
 const volume = document.querySelector('.hero-volume');
 
 if (volume && !reduceMotion.matches) {
-  const copy = volume.querySelector('.hero-copy');
-  const autoAsset = volume.querySelector('.physical-asset-auto');
-  const fashionAsset = volume.querySelector('.physical-asset-fashion');
-  const autoWall = volume.querySelector('.wall-panel-auto');
-  const fashionWall = volume.querySelector('.wall-panel-fashion');
-  let scheduled = false;
+  const titles = ['Automotive', 'Fashion', 'Commercial', 'Branding'];
+  const title = volume.querySelector('[data-volume-title]');
+  const count = volume.querySelector('[data-volume-count]');
+  let active = -1;
   const renderVolume = () => {
-    scheduled = false;
     const rect = volume.getBoundingClientRect();
     const travel = Math.max(1, rect.height - window.innerHeight);
-    const progress = Math.max(0, Math.min(1, -rect.top / travel));
-    // This is one large fixed LED wall. The camera scans from its left side to
-    // its right, then the content on that same surface dissolves into Fashion.
-    const autoImage = Math.max(0, Math.min(1, 1 - (progress - .57) / .20));
-    const fashionImage = Math.max(0, Math.min(1, (progress - .57) / .20));
-    volume.style.setProperty('--auto-image', autoImage.toFixed(3));
-    volume.style.setProperty('--fashion-image', fashionImage.toFixed(3));
-    volume.style.setProperty('--pan', progress.toFixed(3));
-    if (autoWall) autoWall.style.backgroundPosition = `${(50 - progress * 22).toFixed(2)}% center`;
-    if (fashionWall) fashionWall.style.backgroundPosition = `${(68 - progress * 18).toFixed(2)}% center`;
-    volume.dataset.volume = progress < .5 ? '0' : '1';
-    if (autoAsset) {
-      autoAsset.style.transform = `translate3d(calc(-50% - ${(progress * 118).toFixed(2)}vw), 0, 0)`;
-      autoAsset.style.opacity = String(Math.max(0, 1 - Math.max(0, progress - .38) / .24));
+    const progress = Math.max(0, Math.min(0.999, -rect.top / travel));
+    const scene = Math.min(3, Math.floor(progress * 4));
+    volume.style.setProperty('--volume-progress', progress.toFixed(3));
+    if (scene !== active) {
+      active = scene;
+      volume.dataset.volume = String(scene);
+      if (title) title.textContent = titles[scene];
+      if (count) count.textContent = `0${scene + 1} / 04`;
     }
-    if (fashionAsset) {
-      fashionAsset.style.transform = `translate3d(calc(50vw - 50% - ${(progress * 105).toFixed(2)}vw), 0, 0)`;
-      fashionAsset.style.opacity = String(Math.max(0, Math.min(1, (progress - .48) / .24)));
-    }
-    if (copy) copy.style.opacity = String(Math.max(0, 1 - progress * 4));
   };
-  const requestRender = () => {
-    if (!scheduled) { scheduled = true; window.requestAnimationFrame(renderVolume); }
-  };
-  window.addEventListener('scroll', requestRender, { passive: true });
-  window.addEventListener('resize', requestRender);
+  window.addEventListener('scroll', renderVolume, { passive: true });
+  window.addEventListener('resize', renderVolume);
   renderVolume();
 }
 
