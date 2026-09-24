@@ -12,25 +12,24 @@ const orb = document.querySelector('.hero-orb');
 const volume = document.querySelector('.hero-volume');
 
 if (volume && !reduceMotion.matches) {
-  const titles = ['Automotive', 'Fashion', 'Commercial', 'Branding'];
-  const title = volume.querySelector('[data-volume-title]');
-  const count = volume.querySelector('[data-volume-count]');
-  let active = -1;
+  const copy = volume.querySelector('.hero-copy');
+  let scheduled = false;
   const renderVolume = () => {
+    scheduled = false;
     const rect = volume.getBoundingClientRect();
     const travel = Math.max(1, rect.height - window.innerHeight);
-    const progress = Math.max(0, Math.min(0.999, -rect.top / travel));
-    const scene = Math.min(3, Math.floor(progress * 4));
-    volume.style.setProperty('--volume-progress', progress.toFixed(3));
-    if (scene !== active) {
-      active = scene;
-      volume.dataset.volume = String(scene);
-      if (title) title.textContent = titles[scene];
-      if (count) count.textContent = `0${scene + 1} / 04`;
-    }
+    const progress = Math.max(0, Math.min(1, -rect.top / travel));
+    // Standing at the first bay and looking right: Porsche leaves through the
+    // left of frame while the adjoining Fashion bay arrives from the right.
+    volume.style.setProperty('--stage-x', `${(-progress * 100).toFixed(3)}vw`);
+    volume.dataset.volume = progress < .5 ? '0' : '1';
+    if (copy) copy.style.opacity = String(Math.max(0, 1 - progress * 4));
   };
-  window.addEventListener('scroll', renderVolume, { passive: true });
-  window.addEventListener('resize', renderVolume);
+  const requestRender = () => {
+    if (!scheduled) { scheduled = true; window.requestAnimationFrame(renderVolume); }
+  };
+  window.addEventListener('scroll', requestRender, { passive: true });
+  window.addEventListener('resize', requestRender);
   renderVolume();
 }
 
