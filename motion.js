@@ -13,9 +13,6 @@ const volume = document.querySelector('.hero-volume');
 
 if (volume && !reduceMotion.matches) {
   const titles = ['Automotive', 'Fashion', 'Commercial', 'Branding'];
-  // Each bay has two beats: the physical object crosses the stage floor, then
-  // the camera makes a full sweep to the next section of the LED volume.
-  const cameraStops = [-35, -88, 18, -84];
   const title = volume.querySelector('[data-volume-title]');
   const count = volume.querySelector('[data-volume-count]');
   const ledTitle = volume.querySelector('[data-led-title]');
@@ -42,7 +39,6 @@ if (volume && !reduceMotion.matches) {
     // The object is physically locked to the stage. Scroll now drives only
     // the LED wall: its original photo glides behind the stationary object.
     const posterTravel = -34 + smooth(withinScene) * 68;
-    volume.style.setProperty('--poster-x', `${posterTravel.toFixed(2)}%`);
     // Crossfade the LED poster and its corresponding floor object as the
     // background arrives in the next bay, rather than replacing either at a
     // single threshold.
