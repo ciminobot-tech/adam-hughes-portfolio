@@ -14,7 +14,10 @@ const volume = document.querySelector('.hero-volume');
 if (volume && !reduceMotion.matches) {
   const copy = volume.querySelector('.hero-copy');
   const panorama = volume.querySelector('.panorama-stage');
-  const previewStage = Number(new URLSearchParams(window.location.search).get('stage'));
+  // Preview is opt-in only. Number(null) is 0, which would otherwise lock
+  // every normal visit to the opening frame and disable the scroll camera.
+  const stageParam = new URLSearchParams(window.location.search).get('stage');
+  const previewStage = stageParam === null ? Number.NaN : Number(stageParam);
   let scheduled = false;
   const renderVolume = () => {
     scheduled = false;
