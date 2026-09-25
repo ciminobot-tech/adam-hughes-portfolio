@@ -114,9 +114,11 @@ body { margin:0; background:var(--paper); color:var(--ink); font-family:Manrope,
 
 /* One authored panorama: the viewport pans across a continuous LED volume. */
 .hero-volume{height:560vh;min-height:4000px}
-.hero-volume[data-volume] .panorama-stage{position:sticky;top:0;width:100vw;height:100vh;min-height:680px;overflow:hidden;transform:none!important;background:#080909 url('assets/Volume/continuous-four-scene-panorama-v1.png') 0% center/auto 200% no-repeat}
+.hero-volume[data-volume] .panorama-stage{position:sticky;top:0;width:100vw;height:100vh;min-height:680px;overflow:hidden;transform:none!important;background:#080909 url('assets/Volume/continuous-four-scene-panorama-v1.png') 0% center/auto 145% no-repeat}
+.motorsport-final-stage{position:absolute;inset:0;z-index:2;background:#090b0e url('assets/Volume/motorsport-helmet-stage-v1.png') center/cover no-repeat;opacity:0;transition:opacity 300ms linear;pointer-events:none}
+.hero-volume[data-volume="motorsport"] .motorsport-final-stage{opacity:1}
 .hero-volume .panorama-stage:before{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(0,0,0,.12),transparent 26%,transparent 74%,rgba(0,0,0,.08));pointer-events:none}
 .hero-volume[data-volume] .hero-copy h1{color:#f5f1ea;text-shadow:0 3px 22px rgba(0,0,0,.72)}
 .hero-volume[data-volume] .hero-copy .eyebrow,.hero-volume[data-volume] .hero-copy .hero-bottom{color:#f5f1ea;text-shadow:0 2px 14px #000}
 .hero-volume[data-volume] .hero-copy .circle-link{color:#f5f1ea;border-color:#f5f1ea}
-@media(max-width:650px){.hero-volume{height:510vh;min-height:3500px}.hero-volume[data-volume] .panorama-stage{background-size:auto 82%;background-position:0% center}}
+@media(max-width:650px){.hero-volume{height:510vh;min-height:3500px}.hero-volume[data-volume] .panorama-stage{background-size:auto 112%;background-position:0% center}}
