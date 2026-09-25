@@ -43,6 +43,20 @@ if (volume && !reduceMotion.matches) {
       phase = 'motorsport';
     }
     if (panorama) panorama.style.backgroundPosition = `${cameraX.toFixed(2)}% center`;
+    // Clear the LED wall before the final image resolves. This avoids a
+    // ghosted double-driver crossfade and makes the handoff intentional.
+    const finalT = Math.max(0, Math.min(1, (progress - 0.68) / 0.16));
+    const finalReveal = finalT * finalT * (3 - 2 * finalT);
+    const veilIn = Math.max(0, Math.min(1, (progress - 0.62) / 0.06));
+    // Once blacked out, the veil stays at least opaque enough to prevent the
+    // outgoing driver ever ghosting through the incoming helmet-holder.
+    const transitionVeil = progress < 0.62 ? 0 : (progress < 0.68 ? veilIn : 1 - finalReveal);
+    if (panorama) {
+      panorama.style.setProperty('--final-reveal', finalReveal.toFixed(4));
+      panorama.style.setProperty('--final-layer', progress >= 0.68 ? '1' : '0');
+      panorama.style.setProperty('--final-offset', `${((1 - finalReveal) * 9).toFixed(2)}vw`);
+      panorama.style.setProperty('--transition-veil', transitionVeil.toFixed(4));
+    }
     volume.dataset.volume = phase;
     if (copy) copy.style.opacity = String(Math.max(0, 1 - progress * 4));
   };
