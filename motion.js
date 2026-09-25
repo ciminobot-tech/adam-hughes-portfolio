@@ -14,16 +14,33 @@ const volume = document.querySelector('.hero-volume');
 if (volume && !reduceMotion.matches) {
   const copy = volume.querySelector('.hero-copy');
   const panorama = volume.querySelector('.panorama-stage');
+  const previewStage = Number(new URLSearchParams(window.location.search).get('stage'));
   let scheduled = false;
   const renderVolume = () => {
     scheduled = false;
     const rect = volume.getBoundingClientRect();
     const travel = Math.max(1, rect.height - window.innerHeight);
-    const progress = Math.max(0, Math.min(1, -rect.top / travel));
-    // A single authored panoramic LED volume. Scroll changes the camera view
-    // across it, never the wall geometry or the floor.
-    if (panorama) panorama.style.backgroundPosition = `${(progress * 100).toFixed(2)}% center`;
-    volume.dataset.volume = progress < .5 ? '0' : '1';
+    const scrollProgress = Math.max(0, Math.min(1, -rect.top / travel));
+    const progress = Number.isFinite(previewStage) && previewStage >= 0 && previewStage <= 100
+      ? previewStage / 100
+      : scrollProgress;
+    // One authored panoramic LED volume. The camera route is deliberate:
+    // Porsche -> Fashion pans right; Fashion -> Taycan pans back left;
+    // Taycan -> Motorsport pans right. The wall and floor never change.
+    let cameraX;
+    let phase;
+    if (progress < 0.30) {
+      cameraX = (progress / 0.30) * 42;
+      phase = 'porsche';
+    } else if (progress < 0.56) {
+      cameraX = 42 + ((progress - 0.30) / 0.26) * 31;
+      phase = 'taycan';
+    } else {
+      cameraX = 73 + ((progress - 0.56) / 0.44) * 27;
+      phase = 'motorsport';
+    }
+    if (panorama) panorama.style.backgroundPosition = `${cameraX.toFixed(2)}% center`;
+    volume.dataset.volume = phase;
     if (copy) copy.style.opacity = String(Math.max(0, 1 - progress * 4));
   };
   const requestRender = () => {
