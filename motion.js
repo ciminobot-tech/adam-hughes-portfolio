@@ -13,7 +13,7 @@ const volume = document.querySelector('.hero-volume');
 
 if (volume && !reduceMotion.matches) {
   const copy = volume.querySelector('.hero-copy');
-  const panorama = volume.querySelector('.panorama-stage');
+  const stage = volume.querySelector('.source-stage');
   // Preview is opt-in only. Number(null) is 0, which would otherwise lock
   // every normal visit to the opening frame and disable the scroll camera.
   const stageParam = new URLSearchParams(window.location.search).get('stage');
@@ -27,37 +27,37 @@ if (volume && !reduceMotion.matches) {
     const progress = Number.isFinite(previewStage) && previewStage >= 0 && previewStage <= 100
       ? previewStage / 100
       : scrollProgress;
-    // One authored panoramic LED volume. The camera route is deliberate:
-    // Porsche -> Fashion pans right; Fashion -> Taycan pans back left;
-    // Taycan -> Motorsport pans right. The wall and floor never change.
-    let cameraX;
-    let phase;
-    if (progress < 0.30) {
-      cameraX = (progress / 0.30) * 42;
-      phase = 'porsche';
-    } else if (progress < 0.56) {
-      cameraX = 42 + ((progress - 0.30) / 0.26) * 31;
-      phase = 'taycan';
-    } else {
-      cameraX = 73 + ((progress - 0.56) / 0.44) * 27;
-      phase = 'motorsport';
-    }
-    if (panorama) panorama.style.backgroundPosition = `${cameraX.toFixed(2)}% center`;
-    // Clear the LED wall before the final image resolves. This avoids a
-    // ghosted double-driver crossfade and makes the handoff intentional.
-    const finalT = Math.max(0, Math.min(1, (progress - 0.68) / 0.16));
-    const finalReveal = finalT * finalT * (3 - 2 * finalT);
-    const veilIn = Math.max(0, Math.min(1, (progress - 0.62) / 0.06));
-    // Once blacked out, the veil stays at least opaque enough to prevent the
-    // outgoing driver ever ghosting through the incoming helmet-holder.
-    const transitionVeil = progress < 0.62 ? 0 : (progress < 0.68 ? veilIn : 1 - finalReveal);
-    if (panorama) {
-      panorama.style.setProperty('--final-reveal', finalReveal.toFixed(4));
-      panorama.style.setProperty('--final-layer', progress >= 0.68 ? '1' : '0');
-      panorama.style.setProperty('--final-offset', `${((1 - finalReveal) * 9).toFixed(2)}vw`);
-      panorama.style.setProperty('--transition-veil', transitionVeil.toFixed(4));
-    }
-    volume.dataset.volume = phase;
+    // Each scene is the same physical LED-volume set. The supplied source
+    // photograph remains on the wall at its native aspect ratio, while its
+    // approved cutout travels with the wall. No final full-frame composite
+    // is introduced, so the last scene stays part of the move.
+    const stops = [0, 0.25, 0.49, 0.73, 1];
+    const smooth = (value) => {
+      const t = Math.max(0, Math.min(1, value));
+      return t * t * (3 - 2 * t);
+    };
+    const sceneState = (index) => {
+      const start = stops[index];
+      const end = stops[index + 1];
+      const length = end - start;
+      const enter = smooth((progress - (start - length * 0.34)) / (length * 0.34));
+      // The final scene has no outgoing handoff. Keeping its exit at zero is
+      // what lets the last wall and object remain alive at the end of scroll.
+      const exit = index === stops.length - 2 ? 0 : smooth((progress - (end - length * 0.30)) / (length * 0.30));
+      return { opacity: Math.min(enter, 1 - exit), enter, exit };
+    };
+    const directions = [-1, 1, -1, 1];
+    ['auto', 'fashion', 'commercial', 'branding'].forEach((name, index) => {
+      const state = sceneState(index);
+      const offset = directions[index] * ((1 - state.enter) * 30 - state.exit * 30);
+      if (stage) {
+        stage.style.setProperty(`--${name}-opacity`, state.opacity.toFixed(4));
+        stage.style.setProperty(`--${name}-x`, `${offset.toFixed(2)}vw`);
+      }
+    });
+    const labels = ['porsche', 'fashion', 'taycan', 'motorsport'];
+    const phaseIndex = Math.min(3, stops.findIndex((stop, index) => index > 0 && progress < stop) - 1);
+    volume.dataset.volume = labels[phaseIndex < 0 ? 3 : phaseIndex];
     if (copy) copy.style.opacity = String(Math.max(0, 1 - progress * 4));
   };
   const requestRender = () => {

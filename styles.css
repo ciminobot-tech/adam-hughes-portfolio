@@ -122,3 +122,23 @@ body { margin:0; background:var(--paper); color:var(--ink); font-family:Manrope,
 .hero-volume[data-volume] .hero-copy .eyebrow,.hero-volume[data-volume] .hero-copy .hero-bottom{color:#f5f1ea;text-shadow:0 2px 14px #000}
 .hero-volume[data-volume] .hero-copy .circle-link{color:#f5f1ea;border-color:#f5f1ea}
 @media(max-width:650px){.hero-volume{height:510vh;min-height:3500px}.hero-volume[data-volume] .panorama-stage{background-size:auto 112%;background-position:0% center}}
+
+/* Source-led volume sequence. The earlier panorama and final composite were
+   useful studies, but they replaced Adam's supplied work with generated
+   approximations and made the final scene feel like a static end card. */
+.hero-volume{height:560vh;min-height:4000px}
+.hero-volume .source-stage{position:sticky;top:0;width:100vw;height:100vh;min-height:680px;overflow:hidden;background:#07090a;isolation:isolate}
+.source-scene{position:absolute;inset:0;opacity:var(--auto-opacity,0);transform:translate3d(var(--auto-x,0),0,0);will-change:opacity,transform;pointer-events:none}
+.source-scene-fashion{opacity:var(--fashion-opacity,0);transform:translate3d(var(--fashion-x,0),0,0)}
+.source-scene-commercial{opacity:var(--commercial-opacity,0);transform:translate3d(var(--commercial-x,0),0,0)}
+.source-scene-branding{opacity:var(--branding-opacity,0);transform:translate3d(var(--branding-x,0),0,0)}
+.source-wall{position:absolute;z-index:1;left:-12vw;top:7vh;width:124vw;height:65vh;overflow:hidden;border-radius:0 0 49% 49% / 0 0 16% 16%;background-color:#111;background-repeat:no-repeat;background-position:center;background-size:contain;box-shadow:0 25px 44px rgba(0,0,0,.8),inset 0 0 0 5px #151718,inset 0 0 80px #000}
+.source-wall:after{content:"";position:absolute;inset:0;border-radius:inherit;box-shadow:inset 0 -42px 44px rgba(0,0,0,.46),inset 0 0 0 1px rgba(255,255,255,.18);background:linear-gradient(90deg,rgba(0,0,0,.11),transparent 26%,transparent 74%,rgba(0,0,0,.12));pointer-events:none}
+.source-floor{position:absolute;z-index:2;left:-16vw;bottom:-35vh;width:132vw;height:61vh;transform:perspective(950px) rotateX(61deg);transform-origin:center top;background:linear-gradient(180deg,#34383a 0,#171a1b 35%,#050606 89%);box-shadow:0 -10px 40px #000}
+.source-floor:after{content:"";position:absolute;inset:0;background:repeating-linear-gradient(90deg,transparent 0 11%,rgba(255,255,255,.035) 11.1% 11.2%),linear-gradient(180deg,transparent,rgba(0,0,0,.86) 88%)}
+.source-asset{position:absolute;z-index:3;bottom:8vh;left:50%;width:min(43vw,640px);height:min(39vw,560px);transform:translateX(-50%);background-repeat:no-repeat;background-size:contain;background-position:center bottom;filter:drop-shadow(0 26px 12px rgba(0,0,0,.84))}
+.source-scene-auto .source-wall{background-image:url('assets/Automotive/automotive.jpg')}.source-scene-auto .source-asset{width:min(50vw,720px);height:min(34vw,490px);background-image:url('assets/Automotive/porsche-floor-cutout-v2.png')}
+.source-scene-fashion .source-wall{background-image:url('assets/Fashion/fashion.jpg');background-color:#26080d}.source-scene-fashion .source-asset{left:69%;width:min(27vw,410px);height:min(49vw,640px);background-image:url('assets/Fashion/fashion-floor-asset-v1.png')}
+.source-scene-commercial .source-wall{background-image:url('assets/Commercial/commercial.jpg')}.source-scene-commercial .source-asset{width:min(53vw,760px);height:min(30vw,430px);background-image:url('assets/Commercial/taycan-floor-cutout-v2.png')}
+.source-scene-branding .source-wall{background-image:url('assets/Branding/branding.jpg')}.source-scene-branding .source-asset{left:69%;width:min(28vw,430px);height:min(49vw,640px);background-image:url('assets/Branding/racing-driver-floor-cutout-v2.png')}
+@media(max-width:650px){.hero-volume{height:510vh;min-height:3500px}.hero-volume .source-stage{min-height:680px}.source-wall{left:-42vw;top:9vh;width:184vw;height:51vh;border-radius:0 0 49% 49% / 0 0 13% 13%}.source-floor{bottom:-28vh;height:52vh;transform:perspective(680px) rotateX(62deg)}.source-asset{bottom:18vh;width:92vw;height:73vw}.source-scene-auto .source-asset{width:112vw;height:72vw}.source-scene-fashion .source-asset,.source-scene-branding .source-asset{left:70%;width:54vw;height:88vw}.source-scene-commercial .source-asset{width:112vw;height:62vw}}
